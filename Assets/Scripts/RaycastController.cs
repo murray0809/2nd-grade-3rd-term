@@ -10,8 +10,9 @@ public class RaycastController : MonoBehaviour
 
     public LayerMask mask;
 
-    // 照準のImageをインスペクターから設定
-    [SerializeField] Image aim = default;
+    [SerializeField] Image aim = default; // 照準のImageをインスペクターから設定
+
+    public GameObject test;
     void Start()
     {
         
@@ -26,25 +27,29 @@ public class RaycastController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
-            hit.collider.GetComponent<MeshRenderer>().material.color = Color.red;
-            // Rayがhitしたオブジェクトのタグ名を取得
-            string hitTag = hit.collider.tag;
-            // タグの名前がEnemyだったら、照準の色が変わる
+            //hit.collider.GetComponent<MeshRenderer>().material.color = Color.red;
+            
+            string hitTag = hit.collider.tag; // Rayがhitしたオブジェクトのタグ名を取得
+           
             if ((hitTag.Equals("Target")))
             {
-                //照準を赤に変える
-                aim.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                aim.color = new Color(1.0f, 0.0f, 0.0f, 1.0f); //照準を赤に変える
+                //Debug.Log(hit.collider.gameObject.transform.position);
+
+                test = hit.collider.gameObject;
             }
             else
             {
-                // Enemy以外では水色に
-                aim.color = new Color(0.0f, 1.0f, 1.0f, 1.0f);
+                aim.color = new Color(0.0f, 1.0f, 1.0f, 1.0f); //照準を青に変える
+
+                test = null;
             }
         }
         else
         {
-            // Rayがヒットしていない場合は水色に
-            aim.color = new Color(0.0f, 1.0f, 1.0f, 1.0f);
+            aim.color = new Color(0.0f, 1.0f, 1.0f, 1.0f); // Rayがヒットしていない場合は水色に
+
+            test = null;
         }
     }
 }

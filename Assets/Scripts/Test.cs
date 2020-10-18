@@ -4,22 +4,43 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] GameObject test;
+    [SerializeField] GameObject target;
+
+    [SerializeField] GameObject player;
+
+    Vector3 targetPos;
+
+    RaycastController raycastController;
+
+    Rigidbody rb;
     void Start()
     {
-        
+        raycastController = GetComponent<RaycastController>();
+
+        rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        target = raycastController.test;
+        if (target == null)
         {
-            test.SetActive(true);
+            
         }
         else
         {
-            test.SetActive(false);
+            targetPos = target.transform.position;
+        }
+        
+
+        if (Input.GetKey(KeyCode.Z))
+        {
+            rb.AddForce(targetPos,ForceMode.Impulse);
+            Debug.Log("aaa");
+        }
+        else
+        {
+                
         }
     }
 }
