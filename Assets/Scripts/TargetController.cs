@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class TargetController : MonoBehaviour
 {
-    Renderer targetRenderer; // 判定したいオブジェクトのrendererへの参照
-
     [SerializeField] Text test;
 
     bool m_isTargetable = false;
@@ -22,21 +20,12 @@ public class TargetController : MonoBehaviour
     }
     void Start()
     {
-        targetRenderer = GetComponent<Renderer>();
+        
     }
 
     void Update()
     {
-        if (targetRenderer.isVisible)
-        {
-            // 表示されている場合の処理
-           
-        }
-        else
-        {
-            // 表示されていない場合の処理
-          
-        }
+        
     }
 
     private void OnBecameVisible()
@@ -47,6 +36,5 @@ public class TargetController : MonoBehaviour
     private void OnBecameInvisible()
     {
         m_isTargetable = false;
-        Debug.Log("out");
     }
 }

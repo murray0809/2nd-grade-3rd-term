@@ -12,6 +12,11 @@ public class Wire : MonoBehaviour
     ConfigurableJoint joint;
     SoftJointLimit limit;
 
+    [SerializeField] GameObject targetManage;
+    TargetManager targetManager;
+
+    [SerializeField] TargetController m_target;
+
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
@@ -20,6 +25,8 @@ public class Wire : MonoBehaviour
 
     void Update()
     {
+        m_target = targetManager.NowTarget;
+
         if (Input.GetButtonDown("Fire1"))
         {
             limit.limit = Vector3.Distance(player.transform.position, target.transform.position);
@@ -42,6 +49,18 @@ public class Wire : MonoBehaviour
             joint.connectedBody = null;
             joint.xMotion = ConfigurableJointMotion.Free;
             joint.yMotion = ConfigurableJointMotion.Free;
+        }
+    }
+
+    void Hook(ConfigurableJoint joint, TargetController target)
+    {
+        Rigidbody rb = target.GetComponent<Rigidbody>();
+
+        if (rb)
+        {
+            joint.connectedBody = rb;
+            joint.xMotion = ConfigurableJointMotion.Limited;
+            joint.yMotion = ConfigurableJointMotion.Limited;
         }
     }
 }
