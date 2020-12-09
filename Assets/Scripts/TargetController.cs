@@ -7,10 +7,16 @@ using UnityEngine.UI;
 
 public class TargetController : MonoBehaviour
 {
-    [SerializeField] Text test;
+    TargetController myObject;
 
     bool m_isTargetable = false;
 
+    bool targeting = false;
+
+    TargetManager targetManager;
+
+    GameObject manager;
+   
     /// <summary>
     /// オブジェクトが画面内にあるかどうかを返す
     /// </summary>
@@ -20,12 +26,22 @@ public class TargetController : MonoBehaviour
     }
     void Start()
     {
-        
+        manager = GameObject.FindGameObjectWithTag("TargetManager");
+        targetManager = manager.GetComponent<TargetManager>();
     }
 
     void Update()
     {
-        
+        myObject = targetManager.NowTarget;
+
+        if (myObject == this)
+        {
+            this.GetComponent<Renderer>().material.color = Color.red;
+        }
+        else
+        {
+            this.GetComponent<Renderer>().material.color = Color.white;
+        }
     }
 
     private void OnBecameVisible()

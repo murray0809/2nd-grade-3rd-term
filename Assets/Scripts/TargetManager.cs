@@ -27,15 +27,11 @@ public class TargetManager : MonoBehaviour
 
     bool connecting = false;
 
-
-
-    [SerializeField] int targetCount = 0;
+    TargetController targetController;
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
         joint = m_player.GetComponent<ConfigurableJoint>();
-
-        targetCount = this.transform.childCount;
     }
 
     void Update()
@@ -71,15 +67,15 @@ public class TargetManager : MonoBehaviour
                         index = i;
                     }
                 }
-                Debug.Log("target" + i + distance);
+
+                nowTarget = myList[index];
             }
-            nowTarget = myList[index];
+            
 
             m_target = nowTarget;
         }
-       
 
-        if (Input.GetButtonDown("Fire1"))
+   if (Input.GetButtonDown("Fire1"))
         {
             limit.limit = Vector3.Distance(player.transform.position, m_target.transform.position);
             joint.linearLimit = limit;
