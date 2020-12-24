@@ -67,12 +67,13 @@ public class PlayerWire : MonoBehaviour
             joint.linearLimit = limit2;
         }
 
-        if (limit2.limit < 0.5f)
+        if (limit2.limit < 3f)
         {
-            joint.connectedBody = null;
-            joint.xMotion = ConfigurableJointMotion.Free;
-            joint.yMotion = ConfigurableJointMotion.Free;
-            flag = false;
+            //joint.connectedBody = null;
+            //joint.xMotion = ConfigurableJointMotion.Free;
+            //joint.yMotion = ConfigurableJointMotion.Free;
+            //flag = false;
+            limit2.limit = 3f;
         }
 
         //if (Input.GetMouseButtonDown(0))

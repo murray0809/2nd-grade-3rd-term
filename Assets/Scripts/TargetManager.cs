@@ -12,6 +12,11 @@ public class TargetManager : MonoBehaviour
     [SerializeField] TargetController m_target;
     [SerializeField] GameObject m_player;
 
+    Vector3 playerPos;
+    public Vector3 PlayerPos { get { return playerPos; } }
+    Vector3 targetPos;
+    public Vector3 TargetPos { get { return targetPos; } }
+
     Rigidbody m_rb;
 
     ConfigurableJoint joint;
@@ -24,11 +29,12 @@ public class TargetManager : MonoBehaviour
     int index = 0;
 
     bool connecting = false;
+    public bool Connecting { get { return connecting; } }
 
     TargetController targetController;
     void Start()
     {
-        m_player  = GameObject.FindGameObjectWithTag("Player");
+        m_player = GameObject.FindGameObjectWithTag("Player");
 
         m_rb = GetComponent<Rigidbody>();
         joint = m_player.GetComponent<ConfigurableJoint>();
@@ -36,6 +42,7 @@ public class TargetManager : MonoBehaviour
 
     void Update()
     {
+
         myList.Clear();
 
         TargetController[] targets = transform.GetComponentsInChildren<TargetController>();
@@ -70,16 +77,17 @@ public class TargetManager : MonoBehaviour
 
                 nowTarget = myList[index];
             }
-            
+
             m_target = nowTarget;
         }
 
-   if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
             limit.limit = Vector3.Distance(m_player.transform.position, m_target.transform.position);
             joint.linearLimit = limit;
-            Debug.Log(limit.limit);
+            //Debug.Log(limit.limit);
         }
+
         if (Input.GetButton("Fire1"))
         {
             connecting = true;
@@ -93,6 +101,7 @@ public class TargetManager : MonoBehaviour
                 joint.yMotion = ConfigurableJointMotion.Limited;
             }
         }
+
         if (Input.GetButtonUp("Fire1"))
         {
             joint.connectedBody = null;
@@ -101,5 +110,12 @@ public class TargetManager : MonoBehaviour
 
             connecting = false;
         }
+
+        playerPos = m_player.transform.position;
+        if (m_target)
+        {
+            targetPos = m_target.transform.position;
+        }
+        
     }
 }
