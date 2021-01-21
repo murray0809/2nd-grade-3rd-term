@@ -37,6 +37,8 @@ public class Movement : MonoBehaviour
 
             rb.AddForce(0, 250f, 0);
         }
+
+        Debug.Log(canJump);
     }
 
     private void OnCollisionStay(Collision collision)

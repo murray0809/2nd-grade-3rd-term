@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    bool jump = false;
+    private bool m_canJump;
+    public bool CanJump { get { return m_canJump; } }
 
     [SerializeField] float jumpPower;
 
     [SerializeField] float moveSpeed;
-    [SerializeField] float m_movingPowerInTheAir = 5f;
     Rigidbody m_rb;
 
     [SerializeField] Animator m_anim;
@@ -24,22 +24,32 @@ public class CharacterController : MonoBehaviour
 
         Vector3 dir = Vector3.right * h;
 
-        if (!m_anim && !jump)
+        if (!m_anim)
         {
             Vector3 vel = m_rb.velocity;
             vel.x = h * moveSpeed;
             m_rb.velocity = vel;
         }
 
-        if (!jump && Input.GetButtonDown("Jump"))
+        if (!m_canJump)
         {
-            m_rb.AddForce(new Vector3(0f, jumpPower, 0f), ForceMode.Impulse);
-            jump = true;
+            m_rb.AddForce(0, -9.8f, 0);
+        }
+        else if (m_canJump && Input.GetButtonDown("Jump"))
+        {
+            m_canJump = false;
+            m_rb.AddForce(new Vector3(0, jumpPower, 0), ForceMode.Impulse);
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+   
+    private void OnCollisionStay(Collision collision)
     {
-        jump = false;
+        m_canJump = true;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        m_canJump = false;
     }
 }
