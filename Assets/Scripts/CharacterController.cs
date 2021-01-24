@@ -13,6 +13,13 @@ public class CharacterController : MonoBehaviour
     Rigidbody m_rb;
 
     [SerializeField] Animator m_anim;
+
+    bool flag = false;
+
+    private Vector3 m_nowPos;
+
+    [SerializeField] Lane m_mode = Lane.Lane2;
+
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
@@ -21,14 +28,70 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         float h = Input.GetAxisRaw("Horizontal");
-
+        float v = Input.GetAxisRaw("Vertical");
         Vector3 dir = Vector3.right * h;
 
-        if (!m_anim)
+        m_nowPos = transform.position;
+
+        //if (m_mode == Lane.Lane1)
+        //{
+        //    m_nowPos.z = 1f;
+        //    transform.position = m_nowPos;
+        //}
+        //else if(m_mode == Lane.Lane2)
+        //{
+        //    m_nowPos.z = 0;
+        //    transform.position = m_nowPos;
+        //}
+        //else
+        //{
+        //    m_nowPos.z = -1f;
+        //    transform.position = m_nowPos;
+        //}
+
+        if (Input.GetButtonDown("W"))
+        {
+            if (m_mode == Lane.Lane2)
+            {
+                m_mode = Lane.Lane1;
+            }
+            else if (m_mode == Lane.Lane3)
+            {
+                m_mode = Lane.Lane2;
+            }
+        }
+
+        if (Input.GetButtonDown("S"))
+        {
+            if (m_mode == Lane.Lane1)
+            {
+                m_mode = Lane.Lane2;
+            }
+            else if (m_mode == Lane.Lane2)
+            {
+                m_mode = Lane.Lane3;
+            }
+        }
+
+        if (!m_anim && m_canJump)
         {
             Vector3 vel = m_rb.velocity;
             vel.x = h * moveSpeed;
+            
+                vel.z = v * moveSpeed;
+            
             m_rb.velocity = vel;
+
+            if (transform.position.z > 1f)
+            {
+                m_nowPos.z = 1f;
+                transform.position = m_nowPos;
+            }
+            else if (transform.position.z < -1f)
+            {
+                m_nowPos.z = -1f;
+                transform.position = m_nowPos;
+            }
         }
 
         if (!m_canJump)
@@ -52,4 +115,11 @@ public class CharacterController : MonoBehaviour
     {
         m_canJump = false;
     }
+}
+
+public enum Lane
+{
+    Lane1,
+    Lane2,
+    Lane3,
 }

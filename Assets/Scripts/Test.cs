@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    bool test;
-    // Start is called before the first frame update
+    [SerializeField] GameObject test;
+
     void Start()
     {
         
@@ -14,16 +14,13 @@ public class Test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(test);
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        test = true;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        test = false;
+        if (Input.GetMouseButton(0))
+        {
+            test.transform.SetParent(transform);
+        }
+        else
+        {
+            test.transform.SetParent(null);
+        }
     }
 }

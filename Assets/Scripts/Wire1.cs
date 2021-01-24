@@ -16,6 +16,8 @@ public class Wire1 : MonoBehaviour
 
     bool flag = false;
 
+    private bool m_onCamera = false;
+
     CharacterController characterController;
 
     void Start()
@@ -30,37 +32,50 @@ public class Wire1 : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && !characterController.CanJump)
+        if (m_onCamera)
         {
-            limit.limit = Vector3.Distance(transform.position, player.transform.position);
-            joint.linearLimit = limit;
-
-            limit2.limit = Vector3.Distance(transform.position, player.transform.position);
-
-            Rigidbody rb = player.GetComponent<Rigidbody>();
-
-            if (rb)
+            if (Input.GetMouseButtonDown(1) && !characterController.CanJump)
             {
-                joint.connectedBody = rb;
-                joint.xMotion = ConfigurableJointMotion.Limited;
-                joint.yMotion = ConfigurableJointMotion.Limited;
+                limit.limit = Vector3.Distance(transform.position, player.transform.position);
+                joint.linearLimit = limit;
+
+                limit2.limit = Vector3.Distance(transform.position, player.transform.position);
+
+                Rigidbody rb = player.GetComponent<Rigidbody>();
+
+                if (rb)
+                {
+                    joint.connectedBody = rb;
+                    joint.xMotion = ConfigurableJointMotion.Limited;
+                    joint.yMotion = ConfigurableJointMotion.Limited;
+                }
+
+                flag = true;
             }
 
-            flag = true;
-        }
+            if (flag)
+            {
+                limit2.limit -= a;
+                joint.linearLimit = limit2;
+            }
 
-        if (flag)
-        {
-            limit2.limit -= a;
-            joint.linearLimit = limit2;
+            if (limit2.limit < 1f)
+            {
+                joint.connectedBody = null;
+                joint.xMotion = ConfigurableJointMotion.Free;
+                joint.yMotion = ConfigurableJointMotion.Free;
+                flag = false;
+            }
         }
+    }
 
-        if (limit2.limit < 1f)
-        {
-            joint.connectedBody = null;
-            joint.xMotion = ConfigurableJointMotion.Free;
-            joint.yMotion = ConfigurableJointMotion.Free;
-            flag = false;
-        }
+    private void OnBecameVisible()
+    {
+        m_onCamera = true;
+    }
+
+    private void OnBecameInvisible()
+    {
+        m_onCamera = false;
     }
 }
