@@ -14,12 +14,14 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] Animator m_anim;
 
-    bool flag = false;
+    bool m_flag = false;
+    bool m_flag2 = false;
 
     private Vector3 m_nowPos;
 
-    [SerializeField] Lane m_mode = Lane.Lane2;
+    bool m_zMove = false;
 
+    [SerializeField] Lane m_laneMode = Lane.Lane2;
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
@@ -28,84 +30,69 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
-        Vector3 dir = Vector3.right * h;
 
         m_nowPos = transform.position;
 
-        //if (m_mode == Lane.Lane1)
-        //{
-        //    m_nowPos.z = 1f;
-        //    transform.position = m_nowPos;
-        //}
-        //else if(m_mode == Lane.Lane2)
-        //{
-        //    m_nowPos.z = 0;
-        //    transform.position = m_nowPos;
-        //}
-        //else
-        //{
-        //    m_nowPos.z = -1f;
-        //    transform.position = m_nowPos;
-        //}
-
-        if (Input.GetButtonDown("W"))
+        if (transform.position.z > 1.2f)
         {
-            if (m_mode == Lane.Lane2)
-            {
-                m_mode = Lane.Lane1;
-            }
-            else if (m_mode == Lane.Lane3)
-            {
-                m_mode = Lane.Lane2;
-            }
+            m_nowPos.z = 1.2f;
+            transform.position = m_nowPos;
+        }
+        else if (transform.position.z < -1.2f)
+        {
+            m_nowPos.z = -1.2f;
+            transform.position = m_nowPos;
         }
 
-        if (Input.GetButtonDown("S"))
-        {
-            if (m_mode == Lane.Lane1)
-            {
-                m_mode = Lane.Lane2;
-            }
-            else if (m_mode == Lane.Lane2)
-            {
-                m_mode = Lane.Lane3;
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.W))
+        //{
+        //    m_rb.AddForce(new Vector3(0, 0, 5f), ForceMode.Impulse);
+           
+        //}
+        //else if (Input.GetKeyDown(KeyCode.S))
+        //{
+        //    m_rb.AddForce(new Vector3(0, 0, -5f), ForceMode.Impulse);
+            
+        //}
 
         if (!m_anim && m_canJump)
         {
             Vector3 vel = m_rb.velocity;
             vel.x = h * moveSpeed;
-            
-                vel.z = v * moveSpeed;
-            
             m_rb.velocity = vel;
-
-            if (transform.position.z > 1f)
-            {
-                m_nowPos.z = 1f;
-                transform.position = m_nowPos;
-            }
-            else if (transform.position.z < -1f)
-            {
-                m_nowPos.z = -1f;
-                transform.position = m_nowPos;
-            }
         }
 
         if (!m_canJump)
         {
             m_rb.AddForce(0, -9.8f, 0);
         }
+        else if (m_canJump && Input.GetButtonDown("Jump") && Input.GetKey(KeyCode.S))
+        {
+            m_flag2 = false;
+            Jump(false);
+        }
+        else if (m_canJump && Input.GetButtonDown("Jump") && Input.GetKey(KeyCode.W))
+        {
+            m_flag = false;
+            Jump(true);
+        }
         else if (m_canJump && Input.GetButtonDown("Jump"))
         {
-            m_canJump = false;
             m_rb.AddForce(new Vector3(0, jumpPower, 0), ForceMode.Impulse);
+        }
+
+        if (transform.position.z > 0 && m_flag)
+        {
+            m_nowPos.z = 0;
+            transform.position = m_nowPos;
+        }
+        else if (transform.position.z < 0 && m_flag2)
+        {
+            m_nowPos.z = 0;
+            transform.position = m_nowPos;
         }
     }
 
-   
     private void OnCollisionStay(Collision collision)
     {
         m_canJump = true;
@@ -114,6 +101,40 @@ public class CharacterController : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         m_canJump = false;
+    }
+
+    private void Jump(bool flag)
+    {
+        m_canJump = false;
+
+        if (flag)
+        {
+            if (m_laneMode == Lane.Lane2)
+            {
+                m_rb.AddForce(new Vector3(0, jumpPower, 2f), ForceMode.Impulse);
+                m_laneMode = Lane.Lane1;
+            }
+            else if (m_laneMode == Lane.Lane3)
+            {
+                m_rb.AddForce(new Vector3(0, jumpPower, 2f), ForceMode.Impulse);
+                m_laneMode = Lane.Lane2;
+                m_flag = true;
+            }
+        }
+        else
+        {
+            if (m_laneMode == Lane.Lane1)
+            {
+                m_rb.AddForce(new Vector3(0, jumpPower, -2f), ForceMode.Impulse);
+                m_laneMode = Lane.Lane2;
+                m_flag2 = true;
+            }
+            else if (m_laneMode == Lane.Lane2)
+            {
+                m_rb.AddForce(new Vector3(0, jumpPower, -2f), ForceMode.Impulse);
+                m_laneMode = Lane.Lane3;
+            }
+        }
     }
 }
 
