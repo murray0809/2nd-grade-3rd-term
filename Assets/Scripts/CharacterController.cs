@@ -21,7 +21,6 @@ public class CharacterController : MonoBehaviour
 
     bool m_zMove = false;
 
-    [SerializeField] Lane m_laneMode = Lane.Lane2;
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
@@ -69,11 +68,19 @@ public class CharacterController : MonoBehaviour
         else if (m_canJump && Input.GetButtonDown("Jump") && Input.GetKey(KeyCode.S))
         {
             m_flag2 = false;
+            if (transform.position.z == 1.2f)
+            {
+                m_flag2 = true;
+            }
             Jump(false);
         }
         else if (m_canJump && Input.GetButtonDown("Jump") && Input.GetKey(KeyCode.W))
         {
             m_flag = false;
+            if (transform.position.z == -1.2f)
+            {
+                m_flag = true;
+            }
             Jump(true);
         }
         else if (m_canJump && Input.GetButtonDown("Jump"))
@@ -109,38 +116,11 @@ public class CharacterController : MonoBehaviour
 
         if (flag)
         {
-            if (m_laneMode == Lane.Lane2)
-            {
-                m_rb.AddForce(new Vector3(0, jumpPower, 2f), ForceMode.Impulse);
-                m_laneMode = Lane.Lane1;
-            }
-            else if (m_laneMode == Lane.Lane3)
-            {
-                m_rb.AddForce(new Vector3(0, jumpPower, 2f), ForceMode.Impulse);
-                m_laneMode = Lane.Lane2;
-                m_flag = true;
-            }
+            m_rb.AddForce(new Vector3(0, jumpPower, 2f), ForceMode.Impulse);
         }
         else
         {
-            if (m_laneMode == Lane.Lane1)
-            {
-                m_rb.AddForce(new Vector3(0, jumpPower, -2f), ForceMode.Impulse);
-                m_laneMode = Lane.Lane2;
-                m_flag2 = true;
-            }
-            else if (m_laneMode == Lane.Lane2)
-            {
-                m_rb.AddForce(new Vector3(0, jumpPower, -2f), ForceMode.Impulse);
-                m_laneMode = Lane.Lane3;
-            }
+            m_rb.AddForce(new Vector3(0, jumpPower, -2f), ForceMode.Impulse);
         }
     }
-}
-
-public enum Lane
-{
-    Lane1,
-    Lane2,
-    Lane3,
 }
