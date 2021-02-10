@@ -4,43 +4,43 @@ using UnityEngine;
 
 public class CatchTheRope : MonoBehaviour
 {
-	//　キャラクターの到達点
-	[SerializeField]
-	private Transform arrivalPoint;
+	////　キャラクターの到達点
+	//[SerializeField]
+	//private Transform arrivalPoint;
 
 	bool m_flag = false;
 
 	[SerializeField] GameObject m_player;
+    Rigidbody m_playerRb;
 
     private void Start()
     {
 		m_player = GameObject.FindGameObjectWithTag("Player");
+        m_playerRb = m_player.GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
-        if (Input.GetMouseButton(0) && m_flag)
+        if (m_flag && Input.GetMouseButton(0))
         {
-			//　キャラクターの親をロープにする
 			m_player.transform.SetParent(transform);
-		}
+            m_playerRb.isKinematic = true;
+            m_playerRb.constraints = RigidbodyConstraints.None;
+        }
 
         if (Input.GetMouseButtonUp(0))
         {
-			m_player.transform.SetParent(null);
-		}
+            m_playerRb.isKinematic = false;
+            m_player.transform.SetParent(null);
+            m_player.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0);
+            m_playerRb.constraints = RigidbodyConstraints.FreezeRotation;
+        }
     }
-
-    void OnTriggerEnter(Collider col)
-	{
-		if (col.tag == "Player")
-		{
-			m_flag = true;
-			
-
-		}
-
-	}
-
-	
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            m_flag = true;
+        }
+    }
 }

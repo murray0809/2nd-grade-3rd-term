@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class JumpStand : MonoBehaviour
 {
-    [SerializeField] private float jumpForce;
+    [SerializeField] float m_jumpForce;
+    [SerializeField] Vector3 m_directionForce;
 
+    GameObject m_player;
     Rigidbody rb;
+    CharacterController characterController;
 
     void Start()
     {
-        rb = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
+        m_player = GameObject.FindGameObjectWithTag("Player");
+        rb = m_player.GetComponent<Rigidbody>();
+        characterController = m_player.GetComponent<CharacterController>();
     }
 
     void Update()
@@ -22,7 +27,13 @@ public class JumpStand : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.rigidbody.AddForce(new Vector3(0,1,0) * jumpForce,ForceMode.Impulse);
+            if (characterController.Gimmick == false)
+            {
+                characterController.Gimmick = true;
+            }
+            
+            characterController.JumpStand = true;
+            collision.rigidbody.AddForce(m_directionForce * m_jumpForce,ForceMode.Impulse);
         }
     }
 }
