@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class JumpStand : MonoBehaviour
 {
-    [SerializeField] float m_jumpForce;
-    [SerializeField] Vector3 m_directionForce;
+    [SerializeField] float m_jumpForce = 0;
+    [SerializeField] Vector3 m_directionForce = new Vector3(0,0,0);
 
     GameObject m_player;
     Rigidbody rb;
@@ -27,13 +27,13 @@ public class JumpStand : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (characterController.Gimmick == false)
-            {
-                characterController.Gimmick = true;
-            }
-            
-            characterController.JumpStand = true;
-            collision.rigidbody.AddForce(m_directionForce * m_jumpForce,ForceMode.Impulse);
+            //if (characterController.Gimmick == false)
+            //{
+            //    characterController.Gimmick = true;
+            //}
+
+            //characterController.JumpStand = true;
+            rb.AddForce(new Vector3(0, m_jumpForce, 0), ForceMode.Impulse);
         }
     }
 }

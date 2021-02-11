@@ -20,12 +20,6 @@ public class CharacterController : MonoBehaviour
     private Vector3 m_nowPos;
     public Vector3 NowPos { get { return m_nowPos; } set { m_nowPos = value; } }
 
-    private bool m_gimmick = false;
-    public bool Gimmick { get { return m_gimmick; } set { m_gimmick = value; } }
-
-    private bool m_jumpStand = false;
-    public bool JumpStand { get { return m_jumpStand; } set { m_jumpStand = value; } }
-
     private bool m_catch = false;
     public bool Catch { get { return m_catch; } set { m_catch = value; } }
 
@@ -39,14 +33,6 @@ public class CharacterController : MonoBehaviour
 
     bool m_moveLane = false;
     bool a = true;
-
-
-    IEnumerator Change()
-    {
-        yield return new WaitForSeconds(3);
-        m_jumpStand = false;
-        m_gimmick = false;
-    }
 
     void Start()
     {
@@ -77,22 +63,6 @@ public class CharacterController : MonoBehaviour
 
         m_nowPos = transform.position;
 
-        if (m_jumpStand)
-        {
-            if (transform.position.z > 38f)
-            {
-                m_nowPos.z = 38f;
-                transform.position = m_nowPos;
-            }
-
-            if (transform.position.z < 0)
-            {
-                m_nowPos.z = 0;
-                transform.position = m_nowPos;
-                StartCoroutine("Change");
-            }
-        }
-
         if (!m_anim && m_canJump)
         {
             Vector3 vel = m_rb.velocity;
@@ -118,6 +88,18 @@ public class CharacterController : MonoBehaviour
         if (m_canJump && Input.GetButtonDown("Jump"))
         {
             m_rb.AddForce(new Vector3(0, jumpPower, 0), ForceMode.Impulse);
+        }
+
+        if (!m_canJump)
+        {
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                m_rb.AddForce(new Vector3(3, 0, 0), ForceMode.Impulse);
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                m_rb.AddForce(new Vector3(-3, 0, 0), ForceMode.Impulse);
+            }
         }
 
         if (m_catch)
