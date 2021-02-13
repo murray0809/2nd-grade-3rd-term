@@ -5,7 +5,7 @@ using UnityEngine;
 public class TargetManager : MonoBehaviour
 {
     /// <summary>ワイヤーの射程距離</summary>
-    //[SerializeField] float m_targetRange = 6f;
+    [SerializeField] float m_targetRange;
 
     [SerializeField] List<TargetController> myList = new List<TargetController>();
 
@@ -32,12 +32,17 @@ public class TargetManager : MonoBehaviour
     public bool Connecting { get { return connecting; } }
 
     TargetController targetController;
+
+    float m_distance;
+
     void Start()
     {
         m_player = GameObject.FindGameObjectWithTag("Player");
 
         m_rb = GetComponent<Rigidbody>();
         joint = m_player.GetComponent<ConfigurableJoint>();
+
+        targetController = GetComponentInChildren<TargetController>();
     }
 
     void Update()
@@ -83,12 +88,14 @@ public class TargetManager : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            limit.limit = Vector3.Distance(m_player.transform.position, m_target.transform.position);
-            joint.linearLimit = limit;
+            //limit.limit = Vector3.Distance(m_player.transform.position, m_target.transform.position);
+            //joint.linearLimit = limit;
             //Debug.Log(limit.limit);
+            limit.limit = m_targetRange;
+            joint.linearLimit = limit;
         }
 
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && m_distance <= 4f)
         {
             connecting = true;
 
@@ -115,7 +122,7 @@ public class TargetManager : MonoBehaviour
         if (m_target)
         {
             targetPos = m_target.transform.position;
+            m_distance = Vector3.Distance(m_target.transform.position, m_player.transform.position);
         }
-        
     }
 }

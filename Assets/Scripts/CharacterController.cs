@@ -108,8 +108,7 @@ public class CharacterController : MonoBehaviour
             {
                 m_catchObject.transform.SetParent(transform);
             }
-
-            if (Input.GetButtonUp("Fire1"))
+            else
             {
                 m_catchObject.transform.SetParent(null);
             }

@@ -16,6 +16,13 @@ public class TargetController : MonoBehaviour
     TargetManager targetManager;
 
     GameObject manager;
+
+    GameObject m_player;
+
+    float m_distance;
+
+    private bool m_canHook = false;
+    public bool CanHook { get { return m_canHook; } }
    
     /// <summary>
     /// オブジェクトが画面内にあるかどうかを返す
@@ -28,19 +35,24 @@ public class TargetController : MonoBehaviour
     {
         manager = GameObject.FindGameObjectWithTag("TargetManager");
         targetManager = manager.GetComponent<TargetManager>();
+        m_player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
     {
         myObject = targetManager.NowTarget;
 
-        if (myObject == this)
+        m_distance = Vector3.Distance(transform.position, m_player.transform.position);
+
+        if (myObject == this && m_distance <= 4f)
         {
             this.GetComponent<Renderer>().material.color = Color.red;
+            m_canHook = true;
         }
         else
         {
             this.GetComponent<Renderer>().material.color = Color.white;
+            m_canHook = false;
         }
     }
 
