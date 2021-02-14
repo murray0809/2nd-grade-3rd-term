@@ -47,7 +47,6 @@ public class TargetManager : MonoBehaviour
 
     void Update()
     {
-
         myList.Clear();
 
         TargetController[] targets = transform.GetComponentsInChildren<TargetController>();
@@ -95,7 +94,7 @@ public class TargetManager : MonoBehaviour
             joint.linearLimit = limit;
         }
 
-        if (Input.GetButton("Fire1") && m_distance <= 4f)
+        if (Input.GetButton("Fire1") && m_distance <= 4f && m_target)
         {
             connecting = true;
 

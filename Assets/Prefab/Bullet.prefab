@@ -123,4 +123,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0856be6d109b4116b0150fb237f72c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_direction: {x: 10, y: 10, z: 0}
+  m_direction: {x: 10, y: 15, z: 0}

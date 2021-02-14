@@ -7,6 +7,8 @@ public class Canon : MonoBehaviour
     [SerializeField] GameObject m_bullet = null;
     [SerializeField] Transform m_muzzle = null;
 
+    private GameObject m_nowBulllet = null;
+
     void Start()
     {
         
@@ -14,9 +16,9 @@ public class Canon : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetMouseButtonDown(1) && !m_nowBulllet)
         {
-            Instantiate(m_bullet, m_muzzle.position, Quaternion.identity);
+            m_nowBulllet = Instantiate(m_bullet, m_muzzle.position, Quaternion.identity);
         }
     }
 }

@@ -8,8 +8,13 @@ public class Bullet : MonoBehaviour
 
     Rigidbody m_rb;
 
+    private GameObject mainCamera;
+
     void Start()
     {
+        mainCamera = GameObject.Find("Main Camera");
+        mainCamera.SetActive(false);
+
         m_rb = GetComponent<Rigidbody>();
         m_rb.AddForce(m_direction, ForceMode.Impulse);
     }
@@ -21,6 +26,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        mainCamera.SetActive(true);
         Destroy(this.gameObject);
     }
 }

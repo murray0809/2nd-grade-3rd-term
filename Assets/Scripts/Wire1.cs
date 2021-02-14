@@ -20,6 +20,8 @@ public class Wire1 : MonoBehaviour
 
     CharacterController characterController;
 
+    LineRenderer lineRenderer;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -28,13 +30,15 @@ public class Wire1 : MonoBehaviour
         characterController = player.GetComponent<CharacterController>();
 
         limit2.limit = 1f;
+
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     void Update()
     {
         if (m_onCamera)
         {
-            if (Input.GetMouseButtonDown(1) && !characterController.CanJump)
+            if (Input.GetMouseButtonDown(0) && !characterController.CanJump)
             {
                 limit.limit = Vector3.Distance(transform.position, player.transform.position);
                 joint.linearLimit = limit;
@@ -57,14 +61,23 @@ public class Wire1 : MonoBehaviour
             {
                 limit2.limit -= a;
                 joint.linearLimit = limit2;
+
+                lineRenderer.SetPosition(0, player.transform.position);
+                lineRenderer.SetPosition(1, transform.position);
+
+                lineRenderer.startWidth = 0.1f;
+                lineRenderer.endWidth = 0.1f;
             }
 
-            if (limit2.limit < 1f)
+            if (limit2.limit < 0.5f)
             {
                 joint.connectedBody = null;
                 joint.xMotion = ConfigurableJointMotion.Free;
                 joint.yMotion = ConfigurableJointMotion.Free;
                 flag = false;
+
+                lineRenderer.startWidth = 0;
+                lineRenderer.endWidth = 0;
             }
         }
     }
@@ -72,10 +85,12 @@ public class Wire1 : MonoBehaviour
     private void OnBecameVisible()
     {
         m_onCamera = true;
+        this.GetComponent<Renderer>().material.color = Color.red;
     }
 
     private void OnBecameInvisible()
     {
         m_onCamera = false;
+        this.GetComponent<Renderer>().material.color = Color.white;
     }
 }

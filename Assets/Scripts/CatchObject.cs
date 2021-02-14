@@ -22,6 +22,7 @@ public class CatchObject : MonoBehaviour
         {
             characterController.Catch = true;
             characterController.CatchObject = this.gameObject;
+            this.GetComponent<Renderer>().material.color = Color.blue;
         }
     }
 
@@ -31,6 +32,7 @@ public class CatchObject : MonoBehaviour
         {
             characterController.Catch = false;
             characterController.CatchObject = null;
+            this.GetComponent<Renderer>().material.color = Color.white;
         }
     }
 }

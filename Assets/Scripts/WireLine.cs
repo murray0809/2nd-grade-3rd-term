@@ -18,8 +18,6 @@ public class WireLine : MonoBehaviour
         targetManager = GetComponent<TargetManager>();
 
         lineRenderer = GetComponent<LineRenderer>();
-
-        
     }
 
     
