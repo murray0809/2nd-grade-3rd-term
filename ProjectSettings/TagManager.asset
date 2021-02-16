@@ -8,6 +8,7 @@ TagManager:
   - Fire
   - TargetManager
   - TargetPlayer
+  - Goal
   layers:
   - Default
   - TransparentFX
