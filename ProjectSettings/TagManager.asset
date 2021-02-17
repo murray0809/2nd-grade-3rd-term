@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Target
   - Fire
+  - TargetManager
+  - TargetPlayer
+  - Goal
   layers:
   - Default
   - TransparentFX

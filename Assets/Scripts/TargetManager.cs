@@ -5,14 +5,17 @@ using UnityEngine;
 public class TargetManager : MonoBehaviour
 {
     /// <summary>ワイヤーの射程距離</summary>
-    [SerializeField] float m_targetRange = 6f;
+    [SerializeField] float m_targetRange;
 
     [SerializeField] List<TargetController> myList = new List<TargetController>();
 
-    [SerializeField] GameObject player;
-
     [SerializeField] TargetController m_target;
     [SerializeField] GameObject m_player;
+
+    Vector3 playerPos;
+    public Vector3 PlayerPos { get { return playerPos; } }
+    Vector3 targetPos;
+    public Vector3 TargetPos { get { return targetPos; } }
 
     Rigidbody m_rb;
 
@@ -26,16 +29,20 @@ public class TargetManager : MonoBehaviour
     int index = 0;
 
     bool connecting = false;
+    public bool Connecting { get { return connecting; } }
 
+    TargetController targetController;
 
+    float m_distance;
 
-    [SerializeField] int targetCount = 0;
     void Start()
     {
+        m_player = GameObject.FindGameObjectWithTag("Player");
+
         m_rb = GetComponent<Rigidbody>();
         joint = m_player.GetComponent<ConfigurableJoint>();
 
-        targetCount = this.transform.childCount;
+        targetController = GetComponentInChildren<TargetController>();
     }
 
     void Update()
@@ -56,7 +63,7 @@ public class TargetManager : MonoBehaviour
         {
             for (int i = 0; i < myList.Count; i++)
             {
-                float distance = Vector3.Distance(player.transform.position, myList[i].transform.position);
+                float distance = Vector3.Distance(m_player.transform.position, myList[i].transform.position);
 
                 if (i == 0)
                 {
@@ -71,21 +78,23 @@ public class TargetManager : MonoBehaviour
                         index = i;
                     }
                 }
-                Debug.Log("target" + i + distance);
+
+                nowTarget = myList[index];
             }
-            nowTarget = myList[index];
 
             m_target = nowTarget;
         }
-       
 
         if (Input.GetButtonDown("Fire1"))
         {
-            limit.limit = Vector3.Distance(player.transform.position, m_target.transform.position);
+            //limit.limit = Vector3.Distance(m_player.transform.position, m_target.transform.position);
+            //joint.linearLimit = limit;
+            //Debug.Log(limit.limit);
+            limit.limit = m_targetRange;
             joint.linearLimit = limit;
-            Debug.Log(limit.limit);
         }
-        if (Input.GetButton("Fire1"))
+
+        if (Input.GetButton("Fire1") && m_distance <= 4f && m_target)
         {
             connecting = true;
 
@@ -98,6 +107,7 @@ public class TargetManager : MonoBehaviour
                 joint.yMotion = ConfigurableJointMotion.Limited;
             }
         }
+
         if (Input.GetButtonUp("Fire1"))
         {
             joint.connectedBody = null;
@@ -105,6 +115,13 @@ public class TargetManager : MonoBehaviour
             joint.yMotion = ConfigurableJointMotion.Free;
 
             connecting = false;
+        }
+
+        playerPos = m_player.transform.position;
+        if (m_target)
+        {
+            targetPos = m_target.transform.position;
+            m_distance = Vector3.Distance(m_target.transform.position, m_player.transform.position);
         }
     }
 }
