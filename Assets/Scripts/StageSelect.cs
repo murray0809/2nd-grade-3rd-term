@@ -10,8 +10,24 @@ public class StageSelect : MonoBehaviour
 
     private int m_selectNumber = 0;
 
+    [SerializeField] GameObject m_check;
+    [SerializeField] Button[] m_startBack = new Button[2];
+
+    private bool m_checked = false;
+    private bool m_yes = true;
+
+    [SerializeField] Text m_stageNumber;
+    [SerializeField] Text m_clear;
+
+    Clear m_clearMode;
+
+    Singleton singleton;
+
     void Start()
     {
+        singleton = Singleton.Instance;
+        Debug.Log(singleton.stageClearCount);
+
         m_stageSelect[0] = GameObject.Find("Tutorial").GetComponent<Button>();
 
         for (int i = 1; i < 12; i++)
@@ -24,35 +40,74 @@ public class StageSelect : MonoBehaviour
             m_stageSelect[i].interactable = false;
         }
 
+        for (int i = 0; i < singleton.stageClearCount + 1; i++)
+        {
+            m_stageSelect[i].interactable = true;
+        }
+
         m_stageSelect[0].image.color = Color.cyan;
+
+        m_check = GameObject.Find("Check");
+
+        m_stageNumber = GameObject.Find("StageNumber").GetComponent<Text>();
+        m_clear = GameObject.Find("Clear").GetComponent<Text>();
+
+        m_startBack[0] = GameObject.Find("Start").GetComponent<Button>();
+        m_startBack[1] = GameObject.Find("Back").GetComponent<Button>();
+
+        m_check.SetActive(false);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D) && m_selectNumber < 11)
+        if (Input.GetKeyDown(KeyCode.D) && m_selectNumber < 11 &&!m_checked)
         {
             m_selectNumber++;
             Select(m_selectNumber);
         }
-        else if (Input.GetKeyDown(KeyCode.A) && m_selectNumber > 0)
+        else if (Input.GetKeyDown(KeyCode.A) && m_selectNumber > 0 && !m_checked)
         {
             m_selectNumber--;
             Select(m_selectNumber);
         }
-        if (Input.GetKeyDown(KeyCode.S) && m_selectNumber < 8)
+        if (Input.GetKeyDown(KeyCode.S) && m_selectNumber < 8 && !m_checked)
         {
             m_selectNumber += 4;
             Select(m_selectNumber);
         }
-        else if (Input.GetKeyDown(KeyCode.W) && m_selectNumber > 3)
+        else if (Input.GetKeyDown(KeyCode.W) && m_selectNumber > 3 && !m_checked)
         {
             m_selectNumber -= 4;
             Select(m_selectNumber);
         }
 
-        if (Input.GetKeyDown(KeyCode.RightCommand))
+        if (Input.GetKeyDown(KeyCode.RightCommand) && !m_checked)
+        {
+            Check();
+        }
+        else if (m_yes && Input.GetKeyDown(KeyCode.RightCommand) && m_checked)
         {
             Click(m_selectNumber);
+        }
+        else if (!m_yes && Input.GetKeyDown(KeyCode.RightCommand) && m_checked)
+        {
+            Back();
+        }
+
+        if (m_checked)
+        {
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                m_startBack[0].image.color = Color.white;
+                m_startBack[1].image.color = Color.cyan;
+                m_yes = false;
+            }
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                m_startBack[1].image.color = Color.white;
+                m_startBack[0].image.color = Color.cyan;
+                m_yes = true;
+            }
         }
     }
 
@@ -63,6 +118,57 @@ public class StageSelect : MonoBehaviour
             m_stageSelect[i].image.color = Color.white;
         }
         m_stageSelect[number].image.color = Color.cyan;
+    }
+
+    void Check()
+    {
+        m_check.SetActive(true);
+        m_checked = true;
+        if (m_selectNumber == 0)
+        {
+            m_stageNumber.text = "Tutorial";
+        }
+        else
+        {
+            m_stageNumber.text = "Stage" + m_selectNumber;
+        }
+
+        StageCheck();
+
+        switch (m_clearMode)
+        {
+            case Clear.Tutorial:
+                m_clear.text = "ゴールする";
+                break;
+            case Clear.Key:
+                m_clear.text = "カギを３つ集めてゴール";
+                break;
+            case Clear.Time:
+                m_clear.text = "制限時間内にゴール";
+                break;
+        }
+
+        m_startBack[0].image.color = Color.cyan;
+        m_yes = true;
+    }
+
+    void StageCheck()
+    {
+        if (m_selectNumber == 0)
+        {
+            m_clearMode = Clear.Tutorial;
+        }
+        else if (m_selectNumber == 1)
+        {
+            m_clearMode = Clear.Key;
+        }
+    }
+
+    void Back()
+    {
+        m_startBack[1].image.color = Color.white;
+        m_check.SetActive(false);
+        m_checked = false;
     }
 
     public void Click(int number)
@@ -107,4 +213,11 @@ public class StageSelect : MonoBehaviour
                 break;
         }
     }
+}
+
+public enum Clear
+{
+    Tutorial,
+    Key,
+    Time,
 }

@@ -9,10 +9,10 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] Transform m_spwan;
 
-    [SerializeField] bool[] m_key;
+    [SerializeField] int m_key;
 
     private int m_keyCount = 0;
-    public int KeyCount { get { return m_keyCount; } set { m_keyCount = value; } }
+    public int KeyCount { get { return m_keyCount; } }
 
     [SerializeField] Image[] m_keyImage;
 
@@ -23,11 +23,12 @@ public class StageManager : MonoBehaviour
 
     void Start()
     {
-        m_keyImage = new Image[m_key.Length];
+        m_keyImage = new Image[m_key];
 
-        for (int i = 0; i < m_key.Length; i++)
+        for (int i = 0; i < m_key; i++)
         {
             m_keyImage[i] = GameObject.Find("Key" + (i + 1)).GetComponent<Image>();
+            m_keyImage[i].enabled = false;
         }
     }
 
@@ -38,8 +39,7 @@ public class StageManager : MonoBehaviour
 
     public void KeyGet()
     {
-        m_key[m_keyCount] = true;
-        m_keyImage[m_keyCount].color = Color.green;
+        m_keyImage[m_keyCount].enabled = true;
         m_keyCount++;
     }
 }
