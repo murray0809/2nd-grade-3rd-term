@@ -554,7 +554,7 @@ PrefabInstance:
     - target: {fileID: 884394568260042619, guid: 0ac23980739be994ca73957e0f13abfe,
         type: 3}
       propertyPath: jumpPower
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ac23980739be994ca73957e0f13abfe, type: 3}
@@ -624,6 +624,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wire
+      objectReference: {fileID: 0}
+    - target: {fileID: 7329988721568301875, guid: 3371dab3eb3b54fd7ab0cc53508333c0,
+        type: 3}
+      propertyPath: m_targetRange
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7329988721977882186, guid: 3371dab3eb3b54fd7ab0cc53508333c0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7329988722214027552, guid: 3371dab3eb3b54fd7ab0cc53508333c0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 7329988722770480782, guid: 3371dab3eb3b54fd7ab0cc53508333c0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.21
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3371dab3eb3b54fd7ab0cc53508333c0, type: 3}
