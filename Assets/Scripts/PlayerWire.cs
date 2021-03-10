@@ -35,7 +35,7 @@ public class PlayerWire : MonoBehaviour
 
         //Debug.Log(distance);
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetButtonDown("RightCommand"))
         {
             //Rigidbody rb = targetPlayer.GetComponent<Rigidbody>();
             //if (rb)

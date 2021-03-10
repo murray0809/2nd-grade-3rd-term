@@ -22,6 +22,8 @@ public class Wire1 : MonoBehaviour
 
     LineRenderer lineRenderer;
 
+    float distanse;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -32,13 +34,17 @@ public class Wire1 : MonoBehaviour
         limit2.limit = 1f;
 
         lineRenderer = GetComponent<LineRenderer>();
+        m_onCamera = false;
     }
 
     void Update()
     {
-        if (m_onCamera)
+        player = GameObject.FindGameObjectWithTag("Player");
+        distanse = Vector3.Distance(player.transform.position, this.transform.position);
+        
+        if (distanse < 7)
         {
-            if (Input.GetMouseButtonDown(0) && !characterController.CanJump)
+            if (Input.GetButtonDown("RightCommand") && !characterController.CanJump)
             {
                 limit.limit = Vector3.Distance(transform.position, player.transform.position);
                 joint.linearLimit = limit;

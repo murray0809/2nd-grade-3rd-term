@@ -60,49 +60,49 @@ public class StageSelect : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D) && m_selectNumber < 11 &&!m_checked)
+        if (Input.GetButtonDown("D") && m_selectNumber < 11 &&!m_checked)
         {
             m_selectNumber++;
             Select(m_selectNumber);
         }
-        else if (Input.GetKeyDown(KeyCode.A) && m_selectNumber > 0 && !m_checked)
+        else if (Input.GetButtonDown("A") && m_selectNumber > 0 && !m_checked)
         {
             m_selectNumber--;
             Select(m_selectNumber);
         }
-        if (Input.GetKeyDown(KeyCode.S) && m_selectNumber < 8 && !m_checked)
+        if (Input.GetButtonDown("S") && m_selectNumber < 8 && !m_checked)
         {
             m_selectNumber += 4;
             Select(m_selectNumber);
         }
-        else if (Input.GetKeyDown(KeyCode.W) && m_selectNumber > 3 && !m_checked)
+        else if (Input.GetButtonDown("W") && m_selectNumber > 3 && !m_checked)
         {
             m_selectNumber -= 4;
             Select(m_selectNumber);
         }
 
-        if (Input.GetKeyDown(KeyCode.RightCommand) && !m_checked)
+        if (Input.GetButtonDown("Enter") && !m_checked)
         {
             Check();
         }
-        else if (m_yes && Input.GetKeyDown(KeyCode.RightCommand) && m_checked)
+        else if (m_yes && Input.GetButtonDown("Enter") && m_checked)
         {
             Click(m_selectNumber);
         }
-        else if (!m_yes && Input.GetKeyDown(KeyCode.RightCommand) && m_checked)
+        else if (!m_yes && Input.GetButtonDown("Enter") && m_checked)
         {
             Back();
         }
 
         if (m_checked)
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetButtonDown("D"))
             {
                 m_startBack[0].image.color = Color.white;
                 m_startBack[1].image.color = Color.cyan;
                 m_yes = false;
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetButtonDown("A"))
             {
                 m_startBack[1].image.color = Color.white;
                 m_startBack[0].image.color = Color.cyan;

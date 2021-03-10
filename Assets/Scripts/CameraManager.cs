@@ -18,6 +18,8 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
-        
+        m_player = GameObject.FindGameObjectWithTag("Player");
+        m_cinemachine.LookAt = m_player.transform;
+        m_cinemachine.Follow = m_player.transform;
     }
 }

@@ -70,14 +70,14 @@ public class CharacterController : MonoBehaviour
             m_rb.velocity = vel;
         }
 
-        if (Input.GetKeyDown(KeyCode.S) && m_canMove && (m_mode == Lane.Lane1 || m_mode == Lane.Lane2))
+        if (Input.GetButtonDown("S") && m_canMove && (m_mode == Lane.Lane1 || m_mode == Lane.Lane2))
         {
             m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             m_rb.AddForce(new Vector3(0, 0, -10f), ForceMode.Impulse);
             m_moveLane = true;
             a = false;
         }
-        else if (Input.GetKeyDown(KeyCode.W) && m_canMove && (m_mode == Lane.Lane2 || m_mode == Lane.Lane3))
+        else if (Input.GetButtonDown("W") && m_canMove && (m_mode == Lane.Lane2 || m_mode == Lane.Lane3))
         {
             m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             m_rb.AddForce(new Vector3(0, 0, 10f), ForceMode.Impulse);
@@ -92,11 +92,11 @@ public class CharacterController : MonoBehaviour
 
         if (!m_canJump)
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetButtonDown("D"))
             {
                 m_rb.AddForce(new Vector3(3, 0, 0), ForceMode.Impulse);
             }
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetButtonDown("A"))
             {
                 m_rb.AddForce(new Vector3(-3, 0, 0), ForceMode.Impulse);
             }
@@ -104,7 +104,7 @@ public class CharacterController : MonoBehaviour
 
         if (m_catch)
         {
-            if (Input.GetButton("Fire1"))
+            if ((Input.GetButton("RightCommand") || Input.GetButton("RightCtrl")))
             {
                 m_catchObject.transform.SetParent(transform);
             }
