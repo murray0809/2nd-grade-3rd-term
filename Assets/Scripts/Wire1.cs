@@ -44,7 +44,7 @@ public class Wire1 : MonoBehaviour
         
         if (distanse < 7)
         {
-            if (Input.GetButtonDown("RightCommand") && !characterController.CanJump)
+            if ((Input.GetButtonDown("RightCommand") || Input.GetButtonDown("RightCtrl")) && !characterController.CanJump)
             {
                 limit.limit = Vector3.Distance(transform.position, player.transform.position);
                 joint.linearLimit = limit;

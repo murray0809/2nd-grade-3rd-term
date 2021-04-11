@@ -85,7 +85,7 @@ public class TargetManager : MonoBehaviour
             m_target = nowTarget;
         }
 
-        if (Input.GetButtonDown("RightCommand"))
+        if (Input.GetButtonDown("RightCommand") || Input.GetButtonDown("RightCtrl"))
         {
             //limit.limit = Vector3.Distance(m_player.transform.position, m_target.transform.position);
             //joint.linearLimit = limit;
@@ -94,7 +94,7 @@ public class TargetManager : MonoBehaviour
             joint.linearLimit = limit;
         }
 
-        if (Input.GetButton("RightCommand") && m_distance <= 4f && m_target)
+        if ((Input.GetButton("RightCommand") || Input.GetButton("RightCtrl")) && m_distance <= 4f && m_target)
         {
             connecting = true;
 
@@ -108,7 +108,7 @@ public class TargetManager : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonUp("RightCommand"))
+        if (Input.GetButtonUp("RightCommand") || Input.GetButtonUp("RightCtrl"))
         {
             joint.connectedBody = null;
             joint.xMotion = ConfigurableJointMotion.Free;
