@@ -10,37 +10,37 @@ public class Rope : MonoBehaviour
     private bool m_touch = false;
     public bool Touch { get { return m_touch; } set { m_touch = value; } }
 
-    bool touching = false;
+    bool m_touching = false;
 
     Rigidbody m_playerRb;
     Rigidbody m_rb;
 
-    ConfigurableJoint configurableJoint;
+    ConfigurableJoint m_configurableJoint;
 
-    CharacterController characterController;
+    CharacterController m_characterController;
 
-    GetAngle getAngle;
+    GetAngle m_getAngle;
     [SerializeField] GameObject m_angle;
 
     void Start()
     {
         m_player = GameObject.FindGameObjectWithTag("Player");
         m_playerRb = m_player.GetComponent<Rigidbody>();
-        configurableJoint = GetComponent<ConfigurableJoint>();
+        m_configurableJoint = GetComponent<ConfigurableJoint>();
         m_rb = GetComponent<Rigidbody>();
-        getAngle = m_angle.GetComponent<GetAngle>();
+        m_getAngle = m_angle.GetComponent<GetAngle>();
     }
 
     void Update()
     {
-        Debug.Log(getAngle.Angle);
+        Debug.Log(m_getAngle.Angle);
         if (m_touch && Input.GetMouseButton(0))
         {
             //m_playerRb.mass = 0;
 
-            configurableJoint.connectedBody = m_playerRb;
-            configurableJoint.xMotion = ConfigurableJointMotion.Limited;
-            configurableJoint.yMotion = ConfigurableJointMotion.Limited;
+            m_configurableJoint.connectedBody = m_playerRb;
+            m_configurableJoint.xMotion = ConfigurableJointMotion.Limited;
+            m_configurableJoint.yMotion = ConfigurableJointMotion.Limited;
 
             //if (getAngle.Angle < -120f)
             //{ 
@@ -68,9 +68,9 @@ public class Rope : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            configurableJoint.connectedBody = null;
-            configurableJoint.xMotion = ConfigurableJointMotion.Free;
-            configurableJoint.yMotion = ConfigurableJointMotion.Free;
+            m_configurableJoint.connectedBody = null;
+            m_configurableJoint.xMotion = ConfigurableJointMotion.Free;
+            m_configurableJoint.yMotion = ConfigurableJointMotion.Free;
 
             //m_playerRb.mass = 1;
         }

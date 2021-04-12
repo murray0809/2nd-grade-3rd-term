@@ -8,14 +8,14 @@ public class JumpStand : MonoBehaviour
     [SerializeField] Vector3 m_directionForce = new Vector3(0,0,0);
 
     GameObject m_player;
-    Rigidbody rb;
-    CharacterController characterController;
+    Rigidbody m_rb;
+    CharacterController m_characterController;
 
     void Start()
     {
         m_player = GameObject.FindGameObjectWithTag("Player");
-        rb = m_player.GetComponent<Rigidbody>();
-        characterController = m_player.GetComponent<CharacterController>();
+        m_rb = m_player.GetComponent<Rigidbody>();
+        m_characterController = m_player.GetComponent<CharacterController>();
     }
 
     void Update()
@@ -33,7 +33,7 @@ public class JumpStand : MonoBehaviour
             //}
 
             //characterController.JumpStand = true;
-            rb.AddForce(new Vector3(0, m_jumpForce, 0), ForceMode.Impulse);
+            m_rb.AddForce(new Vector3(0, m_jumpForce, 0), ForceMode.Impulse);
         }
     }
 }

@@ -1,29 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Key : MonoBehaviour
+public class GoalTutorial : MonoBehaviour
 {
-    GameObject m_stage;
     StageManager m_stageManager;
 
     void Start()
     {
-        m_stage = GameObject.Find("StageManager");
-        m_stageManager = m_stage.GetComponent<StageManager>();
+        m_stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
     }
 
     void Update()
     {
-        
+
+    }
+
+    void Goal()
+    {
+        SceneManager.LoadScene("Result");
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            m_stageManager.KeyGet();
-            Destroy(this.gameObject);
+            Goal();
         }
     }
 }

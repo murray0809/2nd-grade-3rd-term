@@ -4,80 +4,86 @@ using UnityEngine;
 
 public class Wire1 : MonoBehaviour
 {
-    [SerializeField] GameObject player;
+    [SerializeField] GameObject m_player;
 
     Rigidbody m_rb;
 
-    ConfigurableJoint joint;
-    SoftJointLimit limit;
-    SoftJointLimit limit2;
+    ConfigurableJoint m_joint;
+    SoftJointLimit m_limit;
+    SoftJointLimit m_limit2;
 
     [SerializeField] float a;
 
-    bool flag = false;
+    bool m_flag = false;
 
     private bool m_onCamera = false;
 
-    CharacterController characterController;
+    CharacterController m_characterController;
 
-    LineRenderer lineRenderer;
+    LineRenderer m_lineRenderer;
+
+    float m_distanse;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        m_player = GameObject.FindGameObjectWithTag("Player");
         m_rb = GetComponent<Rigidbody>();
-        joint = GetComponent<ConfigurableJoint>();
-        characterController = player.GetComponent<CharacterController>();
+        m_joint = GetComponent<ConfigurableJoint>();
+        m_characterController = m_player.GetComponent<CharacterController>();
 
-        limit2.limit = 1f;
+        m_limit2.limit = 1f;
 
-        lineRenderer = GetComponent<LineRenderer>();
+        m_lineRenderer = GetComponent<LineRenderer>();
+        m_onCamera = false;
     }
 
     void Update()
     {
-        if (m_onCamera)
+        m_player = GameObject.FindGameObjectWithTag("Player");
+        m_distanse = Vector3.Distance(m_player.transform.position, this.transform.position);
+        
+        if (m_distanse < 7)
         {
-            if (Input.GetMouseButtonDown(0) && !characterController.CanJump)
+            if ((Input.GetButtonDown("RightCommand") || Input.GetButtonDown("RightCtrl")) && !m_characterController.CanJump)
             {
-                limit.limit = Vector3.Distance(transform.position, player.transform.position);
-                joint.linearLimit = limit;
+                m_limit.limit = Vector3.Distance(transform.position, m_player.transform.position);
+                m_joint.linearLimit = m_limit;
 
-                limit2.limit = Vector3.Distance(transform.position, player.transform.position);
+                m_limit2.limit = Vector3.Distance(transform.position, m_player.transform.position);
 
-                Rigidbody rb = player.GetComponent<Rigidbody>();
+                Rigidbody rb = m_player.GetComponent<Rigidbody>();
 
                 if (rb)
                 {
-                    joint.connectedBody = rb;
-                    joint.xMotion = ConfigurableJointMotion.Limited;
-                    joint.yMotion = ConfigurableJointMotion.Limited;
+                    m_joint.connectedBody = rb;
+                    m_joint.xMotion = ConfigurableJointMotion.Limited;
+                    m_joint.yMotion = ConfigurableJointMotion.Limited;
                 }
 
-                flag = true;
+                m_flag = true;
             }
 
-            if (flag)
+            if (m_flag)
             {
-                limit2.limit -= a;
-                joint.linearLimit = limit2;
+                m_limit2.limit -= a;
+                m_joint.linearLimit = m_limit2;
 
-                lineRenderer.SetPosition(0, player.transform.position);
-                lineRenderer.SetPosition(1, transform.position);
+                m_lineRenderer.SetPosition(0, m_player.transform.position);
+                m_lineRenderer.SetPosition(1, transform.position);
 
-                lineRenderer.startWidth = 0.1f;
-                lineRenderer.endWidth = 0.1f;
+                m_lineRenderer.startWidth = 0.1f;
+                m_lineRenderer.endWidth = 0.1f;
             }
 
-            if (limit2.limit < 0.5f)
+            if (m_limit2.limit < 0.5f)
             {
-                joint.connectedBody = null;
-                joint.xMotion = ConfigurableJointMotion.Free;
-                joint.yMotion = ConfigurableJointMotion.Free;
-                flag = false;
+                m_joint.connectedBody = null;
+                m_joint.xMotion = ConfigurableJointMotion.Free;
+                m_joint.yMotion = ConfigurableJointMotion.Free;
+                m_flag = false;
 
-                lineRenderer.startWidth = 0;
-                lineRenderer.endWidth = 0;
+                m_lineRenderer.startWidth = 0;
+                m_lineRenderer.endWidth = 0;
             }
         }
     }

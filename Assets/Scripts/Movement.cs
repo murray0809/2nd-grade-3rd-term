@@ -4,45 +4,45 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public Transform floor;
-    public float moveSpeed;
-    private bool canJump;
+    public Transform m_floor;
+    public float m_moveSpeed;
+    private bool m_canJump;
     
-    Rigidbody rb;
+    Rigidbody m_rb;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        m_rb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
         if (Input.GetButton("A"))
         {
-            transform.position = transform.position + transform.TransformDirection(Vector3.left) * moveSpeed;
+            transform.position = transform.position + transform.TransformDirection(Vector3.left) * m_moveSpeed;
         }
 
         if (Input.GetButton("D"))
         {
-            transform.position = transform.position + transform.TransformDirection(-Vector3.left) * moveSpeed;
+            transform.position = transform.position + transform.TransformDirection(-Vector3.left) * m_moveSpeed;
         }
 
-        if (!canJump)
+        if (!m_canJump)
         {
-            rb.AddForce(0, -10f, 0);
+            m_rb.AddForce(0, -10f, 0);
         }
-        else if (Input.GetButton("space") && canJump)
+        else if (Input.GetButton("space") && m_canJump)
         {
-            canJump = false;
+            m_canJump = false;
 
-            rb.AddForce(0, 250f, 0);
+            m_rb.AddForce(0, 250f, 0);
         }
 
-        Debug.Log(canJump);
+        Debug.Log(m_canJump);
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        canJump = true;
+        m_canJump = true;
     }
 }

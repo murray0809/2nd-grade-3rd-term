@@ -268,7 +268,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Push Any Key
+  m_Text: Push Enter
 --- !u!222 &515553931
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -723,7 +723,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u30B9\u30C6\u30FC\u30B82\u304C\u958B\u653E\u3055\u308C\u307E\u3057\u305F"
+  m_Text: "\u30B9\u30C6\u30FC\u30B82\u306F\u88FD\u4F5C\u4E2D\u3067\u3059"
 --- !u!222 &1870417788
 CanvasRenderer:
   m_ObjectHideFlags: 0

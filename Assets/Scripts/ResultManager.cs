@@ -10,14 +10,14 @@ public class ResultManager : MonoBehaviour
     void Start()
     {
         singleton = Singleton.Instance;
-        Debug.Log(singleton.stageClearCount);
+        Debug.Log(singleton.m_stageClearCount);
     }
 
     void Update()
     {
-        if (Input.anyKeyDown)
+        if (Input.GetButtonDown("Enter"))
         {
-            singleton.stageClearCount++;
+            //singleton.stageClearCount++;
             SceneManager.LoadScene("StageSelect");
         }
     }

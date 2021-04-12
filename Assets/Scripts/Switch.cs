@@ -7,12 +7,12 @@ public class Switch : MonoBehaviour
     [SerializeField] GameObject m_door;
     [SerializeField] GameObject m_particle;
 
-    [SerializeField]GameObject mainCamera;
-    [SerializeField]GameObject otherCamera;
+    [SerializeField]GameObject m_mainCamera;
+    [SerializeField]GameObject m_otherCamera;
 
     void Start()
     {
-        otherCamera.SetActive(false);
+        m_otherCamera.SetActive(false);
     }
 
     IEnumerator BreakObject()
@@ -24,8 +24,8 @@ public class Switch : MonoBehaviour
     IEnumerator CameraChange()
     {
         yield return new WaitForSeconds(1.5f);
-        otherCamera.SetActive(false);
-        mainCamera.SetActive(true);
+        m_otherCamera.SetActive(false);
+        m_mainCamera.SetActive(true);
     }
 
     void Update()
@@ -37,8 +37,8 @@ public class Switch : MonoBehaviour
     {
         Instantiate(m_particle, m_door.transform.position, Quaternion.identity);
         StartCoroutine("BreakObject");
-        otherCamera.SetActive(true);
-        mainCamera.SetActive(false);
+        m_otherCamera.SetActive(true);
+        m_mainCamera.SetActive(false);
         StartCoroutine("CameraChange");
     }
 }
