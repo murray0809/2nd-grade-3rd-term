@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CatchObject : MonoBehaviour
 {
-    CharacterController characterController;
+    CharacterController m_characterController;
 
     void Start()
     {
-        characterController = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController>();
+        m_characterController = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController>();
     }
 
     void Update()
@@ -20,8 +20,8 @@ public class CatchObject : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            characterController.Catch = true;
-            characterController.CatchObject = this.gameObject;
+            m_characterController.Catch = true;
+            m_characterController.CatchObject = this.gameObject;
             this.GetComponent<Renderer>().material.color = Color.blue;
         }
     }
@@ -30,8 +30,8 @@ public class CatchObject : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            characterController.Catch = false;
-            characterController.CatchObject = null;
+            m_characterController.Catch = false;
+            m_characterController.CatchObject = null;
             this.GetComponent<Renderer>().material.color = Color.white;
         }
     }

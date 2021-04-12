@@ -10,7 +10,7 @@ public class ResultManager : MonoBehaviour
     void Start()
     {
         singleton = Singleton.Instance;
-        Debug.Log(singleton.stageClearCount);
+        Debug.Log(singleton.m_stageClearCount);
     }
 
     void Update()

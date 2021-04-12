@@ -26,7 +26,7 @@ public class StageSelect : MonoBehaviour
     void Start()
     {
         singleton = Singleton.Instance;
-        Debug.Log(singleton.stageClearCount);
+        Debug.Log(singleton.m_stageClearCount);
 
         m_stageSelect[0] = GameObject.Find("Tutorial").GetComponent<Button>();
 
@@ -40,7 +40,7 @@ public class StageSelect : MonoBehaviour
             m_stageSelect[i].interactable = false;
         }
 
-        for (int i = 0; i < singleton.stageClearCount + 1; i++)
+        for (int i = 0; i < singleton.m_stageClearCount + 1; i++)
         {
             m_stageSelect[i].interactable = true;
         }

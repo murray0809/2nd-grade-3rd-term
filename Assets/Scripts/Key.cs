@@ -5,12 +5,12 @@ using UnityEngine;
 public class Key : MonoBehaviour
 {
     GameObject m_stage;
-    StageManager stageManager;
+    StageManager m_stageManager;
 
     void Start()
     {
         m_stage = GameObject.Find("StageManager");
-        stageManager = m_stage.GetComponent<StageManager>();
+        m_stageManager = m_stage.GetComponent<StageManager>();
     }
 
     void Update()
@@ -22,7 +22,7 @@ public class Key : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            stageManager.KeyGet();
+            m_stageManager.KeyGet();
             Destroy(this.gameObject);
         }
     }

@@ -7,9 +7,9 @@ public class CharacterController : MonoBehaviour
     private bool m_canJump;
     public bool CanJump { get { return m_canJump; } }
 
-    [SerializeField] float jumpPower;
+    [SerializeField] float m_jumpPower;
 
-    [SerializeField] float moveSpeed;
+    [SerializeField] float m_moveSpeed;
     Rigidbody m_rb;
 
     [SerializeField] Animator m_anim;
@@ -66,7 +66,7 @@ public class CharacterController : MonoBehaviour
         if (!m_anim && m_canJump)
         {
             Vector3 vel = m_rb.velocity;
-            vel.x = h * moveSpeed;
+            vel.x = h * m_moveSpeed;
             m_rb.velocity = vel;
         }
 
@@ -87,7 +87,7 @@ public class CharacterController : MonoBehaviour
 
         if (m_canJump && Input.GetButtonDown("Jump"))
         {
-            m_rb.AddForce(new Vector3(0, jumpPower, 0), ForceMode.Impulse);
+            m_rb.AddForce(new Vector3(0, m_jumpPower, 0), ForceMode.Impulse);
         }
 
         if (!m_canJump)
@@ -187,11 +187,11 @@ public class CharacterController : MonoBehaviour
 
         if (flag)
         {
-            m_rb.AddForce(new Vector3(0, jumpPower, 2f), ForceMode.Impulse);
+            m_rb.AddForce(new Vector3(0, m_jumpPower, 2f), ForceMode.Impulse);
         }
         else
         {
-            m_rb.AddForce(new Vector3(0, jumpPower, -2f), ForceMode.Impulse);
+            m_rb.AddForce(new Vector3(0, m_jumpPower, -2f), ForceMode.Impulse);
         }
     }
 }

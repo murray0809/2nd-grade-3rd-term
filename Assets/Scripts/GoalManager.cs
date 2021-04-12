@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GoalManager : MonoBehaviour
 {
-    StageManager stageManager;
+    StageManager m_stageManager;
 
     void Start()
     {
-        stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
+        m_stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
     }
 
     void Update()
@@ -19,7 +19,7 @@ public class GoalManager : MonoBehaviour
 
     void Goal()
     {
-        if (stageManager.KeyCount >= 3)
+        if (m_stageManager.KeyCount >= 3)
         {
             SceneManager.LoadScene("Result");
         }

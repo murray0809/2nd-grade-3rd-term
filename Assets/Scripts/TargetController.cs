@@ -11,11 +11,11 @@ public class TargetController : MonoBehaviour
 
     bool m_isTargetable = false;
 
-    bool targeting = false;
+    bool m_targeting = false;
 
-    TargetManager targetManager;
+    TargetManager m_targetManager;
 
-    GameObject manager;
+    GameObject m_manager;
 
     GameObject m_player;
 
@@ -33,14 +33,14 @@ public class TargetController : MonoBehaviour
     }
     void Start()
     {
-        manager = GameObject.FindGameObjectWithTag("TargetManager");
-        targetManager = manager.GetComponent<TargetManager>();
+        m_manager = GameObject.FindGameObjectWithTag("TargetManager");
+        m_targetManager = m_manager.GetComponent<TargetManager>();
         m_player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
     {
-        myObject = targetManager.NowTarget;
+        myObject = m_targetManager.NowTarget;
 
         m_distance = Vector3.Distance(transform.position, m_player.transform.position);
 

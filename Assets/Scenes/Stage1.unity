@@ -522,8 +522,8 @@ MonoBehaviour:
   m_door: {fileID: 1920008878}
   m_particle: {fileID: 794593189130398969, guid: 70399ffe8df85415e861dbe13dfb6382,
     type: 3}
-  mainCamera: {fileID: 1240581329}
-  otherCamera: {fileID: 1435590689}
+  m_mainCamera: {fileID: 1240581329}
+  m_otherCamera: {fileID: 1435590689}
 --- !u!4 &173130660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6967424408054386123, guid: 47516bcd41c45464db4269f8de7f0f0c,
@@ -1543,7 +1543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17d027e1364b437aa02461ff4bc6373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  m_player: {fileID: 0}
   a: 0.3
 --- !u!65 &811657046
 BoxCollider:

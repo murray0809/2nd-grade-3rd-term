@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GoalTutorial : MonoBehaviour
 {
-    StageManager stageManager;
+    StageManager m_stageManager;
 
     void Start()
     {
-        stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
+        m_stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
     }
 
     void Update()

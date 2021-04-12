@@ -4,37 +4,38 @@ using UnityEngine;
 
 public class WireLine : MonoBehaviour
 {
-    [SerializeField] GameObject player;
-    [SerializeField] GameObject target;
+    [SerializeField] GameObject m_player;
+    [SerializeField] GameObject m_target;
 
-    Vector3 playerPos;
-    Vector3 targetPos;
+    Vector3 m_playerPos;
+    Vector3 m_targetPos;
 
-    LineRenderer lineRenderer;
+    LineRenderer m_lineRenderer;
 
-    TargetManager targetManager;
+    TargetManager m_targetManager;
+
     void Start()
     {
-        targetManager = GetComponent<TargetManager>();
+        m_targetManager = GetComponent<TargetManager>();
 
-        lineRenderer = GetComponent<LineRenderer>();
+        m_lineRenderer = GetComponent<LineRenderer>();
     }
 
     
     void Update()
     {
-        if (targetManager.Connecting)
+        if (m_targetManager.Connecting)
         {
-            lineRenderer.SetPosition(0, targetManager.PlayerPos);
-            lineRenderer.SetPosition(1, targetManager.TargetPos);
+            m_lineRenderer.SetPosition(0, m_targetManager.PlayerPos);
+            m_lineRenderer.SetPosition(1, m_targetManager.TargetPos);
 
-            lineRenderer.startWidth = 0.1f;
-            lineRenderer.endWidth = 0.1f;
+            m_lineRenderer.startWidth = 0.1f;
+            m_lineRenderer.endWidth = 0.1f;
         }
         else
         {
-            lineRenderer.startWidth = 0;
-            lineRenderer.endWidth = 0;
+            m_lineRenderer.startWidth = 0;
+            m_lineRenderer.endWidth = 0;
         }
     }
 }

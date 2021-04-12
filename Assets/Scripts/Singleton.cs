@@ -6,7 +6,7 @@ public class Singleton
 {
     private static Singleton mInstance;
 
-    public int stageClearCount = 1;
+    public int m_stageClearCount = 1;
    
     private Singleton()
     { // Private Constructor
