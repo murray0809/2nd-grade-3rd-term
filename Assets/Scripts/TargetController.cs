@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 
@@ -9,9 +8,7 @@ public class TargetController : MonoBehaviour
 {
     TargetController myObject;
 
-    bool m_isTargetable = false;
-
-    bool m_targeting = false;
+    private bool m_isTargetable = false;
 
     TargetManager m_targetManager;
 
@@ -25,12 +22,13 @@ public class TargetController : MonoBehaviour
     public bool CanHook { get { return m_canHook; } }
    
     /// <summary>
-    /// オブジェクトが画面内にあるかどうかを返す
+    /// オブジェクトが画面内にあるか
     /// </summary>
     public bool IsHookable
     {
         get { return m_isTargetable; }
     }
+
     void Start()
     {
         m_manager = GameObject.FindGameObjectWithTag("TargetManager");
@@ -40,10 +38,35 @@ public class TargetController : MonoBehaviour
 
     void Update()
     {
+        //現在のターゲットの取得
         myObject = m_targetManager.NowTarget;
 
         m_distance = Vector3.Distance(transform.position, m_player.transform.position);
 
+        AddColor();
+    }
+
+    /// <summary>
+    /// 画面内にある場合
+    /// </summary>
+    private void OnBecameVisible()
+    {
+        m_isTargetable = true;
+    }
+
+    /// <summary>
+    /// 画面内にない場合
+    /// </summary>
+    private void OnBecameInvisible()
+    {
+        m_isTargetable = false;
+    }
+
+    /// <summary>
+    /// ワイヤーを繋げられるなら赤にする
+    /// </summary>
+    private void AddColor()
+    {
         if (myObject == this && m_distance <= 4f)
         {
             this.GetComponent<Renderer>().material.color = Color.red;
@@ -54,15 +77,5 @@ public class TargetController : MonoBehaviour
             this.GetComponent<Renderer>().material.color = Color.white;
             m_canHook = false;
         }
-    }
-
-    private void OnBecameVisible()
-    {
-        m_isTargetable = true;
-    }
-
-    private void OnBecameInvisible()
-    {
-        m_isTargetable = false;
     }
 }

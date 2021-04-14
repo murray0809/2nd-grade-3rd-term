@@ -8,8 +8,8 @@ public class CharacterController : MonoBehaviour
     public bool CanJump { get { return m_canJump; } }
 
     [SerializeField] float m_jumpPower = 5f;
-
     [SerializeField] float m_moveSpeed = 5f;
+
     Rigidbody m_rb;
 
     [SerializeField] Animator m_anim;
@@ -17,9 +17,15 @@ public class CharacterController : MonoBehaviour
     private Vector3 m_nowPos;
     public Vector3 NowPos { get { return m_nowPos; } set { m_nowPos = value; } }
 
+    /// <summary>
+    /// オブジェクトを動かせる状態かどうか
+    /// </summary>
     private bool m_catch = false;
     public bool Catch { get { return m_catch; } set { m_catch = value; } }
 
+    /// <summary>
+    /// 動かすオブジェクトを取得する
+    /// </summary>
     [SerializeField] GameObject m_catchObject;
     public GameObject CatchObject { get { return m_catchObject; } set { m_catchObject = value; } }
 
