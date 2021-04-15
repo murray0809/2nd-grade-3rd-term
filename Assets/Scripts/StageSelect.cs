@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// ステージセレクト管理のスクリプト
+/// </summary>
 public class StageSelect : MonoBehaviour
 {
     [SerializeField] Button[] m_stageSelect = new Button[12];
@@ -60,22 +63,22 @@ public class StageSelect : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("D") && m_selectNumber < 11 &&!m_checked)
+        if (Input.GetButtonDown("Right") && m_selectNumber < 11 &&!m_checked)
         {
             m_selectNumber++;
             Select(m_selectNumber);
         }
-        else if (Input.GetButtonDown("A") && m_selectNumber > 0 && !m_checked)
+        else if (Input.GetButtonDown("Left") && m_selectNumber > 0 && !m_checked)
         {
             m_selectNumber--;
             Select(m_selectNumber);
         }
-        if (Input.GetButtonDown("S") && m_selectNumber < 8 && !m_checked)
+        if (Input.GetButtonDown("Down") && m_selectNumber < 8 && !m_checked)
         {
             m_selectNumber += 4;
             Select(m_selectNumber);
         }
-        else if (Input.GetButtonDown("W") && m_selectNumber > 3 && !m_checked)
+        else if (Input.GetButtonDown("Up") && m_selectNumber > 3 && !m_checked)
         {
             m_selectNumber -= 4;
             Select(m_selectNumber);
@@ -96,21 +99,23 @@ public class StageSelect : MonoBehaviour
 
         if (m_checked)
         {
-            if (Input.GetButtonDown("D"))
+            if (Input.GetButtonDown("Right"))
             {
-                m_startBack[0].image.color = Color.white;
-                m_startBack[1].image.color = Color.cyan;
+                StartButtonColorChange(false);
                 m_yes = false;
             }
-            else if (Input.GetButtonDown("A"))
+            else if (Input.GetButtonDown("Left"))
             {
-                m_startBack[1].image.color = Color.white;
-                m_startBack[0].image.color = Color.cyan;
-                m_yes = true;
+                StartButtonColorChange(true);
+                 m_yes = true;
             }
         }
     }
 
+    /// <summary>
+    /// 選択されているステージ処理
+    /// </summary>
+    /// <param name="number"></param>
     private void Select(int number)
     {
         for (int i = 0; i < 12; i++)
@@ -120,6 +125,9 @@ public class StageSelect : MonoBehaviour
         m_stageSelect[number].image.color = Color.cyan;
     }
 
+    /// <summary>
+    /// ステージ決定処理
+    /// </summary>
     void Check()
     {
         m_check.SetActive(true);
@@ -164,6 +172,26 @@ public class StageSelect : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///　選択決定画面で選択肢の色変更処理
+    /// </summary>
+    /// <param name="start"></param>
+    void StartButtonColorChange(bool start)
+    {
+        if (start)
+        {
+            m_startBack[0].image.color = Color.cyan;
+            m_startBack[1].image.color = Color.white;
+        }
+        else
+        {
+            m_startBack[0].image.color = Color.white;
+            m_startBack[1].image.color = Color.cyan;
+        }
+    }
+    /// <summary>
+    /// 戻るを押した際の処理
+    /// </summary>
     void Back()
     {
         m_startBack[1].image.color = Color.white;
@@ -171,6 +199,10 @@ public class StageSelect : MonoBehaviour
         m_checked = false;
     }
 
+    /// <summary>
+    /// ステージの読み込み処理
+    /// </summary>
+    /// <param name="number"></param>
     public void Click(int number)
     {
         switch (number)
@@ -215,6 +247,9 @@ public class StageSelect : MonoBehaviour
     }
 }
 
+/// <summary>
+/// クリア条件の種類
+/// </summary>
 public enum Clear
 {
     Tutorial,

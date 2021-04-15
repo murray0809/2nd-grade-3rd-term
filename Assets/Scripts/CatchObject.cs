@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 動かせるオブジェクトのスクリプト
+/// </summary>
 public class CatchObject : MonoBehaviour
 {
     CharacterController m_characterController;
@@ -16,6 +19,10 @@ public class CatchObject : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// プレイヤーが触れた時に動かせる状態にする
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -26,6 +33,10 @@ public class CatchObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// プレイヤーが離れた時に動かせないようにする
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))

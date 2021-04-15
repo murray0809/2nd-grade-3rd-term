@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// キャラクター操作のスクリプト
+/// </summary>
 public class CharacterController : MonoBehaviour
 {
     private bool m_canJump;

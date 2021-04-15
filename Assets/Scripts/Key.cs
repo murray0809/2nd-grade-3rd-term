@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// カギのスクリプト
+/// </summary>
 public class Key : MonoBehaviour
 {
-    GameObject m_stage;
+    private GameObject m_stage;
     StageManager m_stageManager;
 
     void Start()
@@ -18,6 +21,10 @@ public class Key : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// カギをゲットした際の処理
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーを引き寄せるワイヤーのスクリプト
+/// </summary>
 public class Wire1 : MonoBehaviour
 {
     [SerializeField] GameObject m_player;

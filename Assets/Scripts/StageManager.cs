@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// ステージ管理のスクリプト
+/// </summary>
 public class StageManager : MonoBehaviour
 {
     [SerializeField] GameObject m_player;
@@ -37,6 +40,9 @@ public class StageManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// カギをゲットした時の処理
+    /// </summary>
     public void KeyGet()
     {
         m_keyImage[m_keyCount].enabled = true;

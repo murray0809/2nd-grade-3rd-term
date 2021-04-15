@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ワイヤーアクション管理のスクリプト
+/// </summary>
 public class TargetManager : MonoBehaviour
 {
     /// <summary>

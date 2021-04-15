@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
+/// <summary>
+/// Cinemachineに設定するスクリプト
+/// </summary>
 public class CameraManager : MonoBehaviour
 {
     private GameObject m_player;

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ワイヤーのラインスクリプト
+/// </summary>
 public class WireLine : MonoBehaviour
 {
     [SerializeField] GameObject m_player;

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ジャンプ台のスクリプト
+/// </summary>
 public class JumpStand : MonoBehaviour
 {
     [SerializeField] float m_jumpForce = 0;
-    [SerializeField] Vector3 m_directionForce = new Vector3(0,0,0);
 
-    GameObject m_player;
+    private GameObject m_player;
     Rigidbody m_rb;
     CharacterController m_characterController;
 
@@ -23,16 +25,14 @@ public class JumpStand : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// ジャンプ台に乗った時の処理
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //if (characterController.Gimmick == false)
-            //{
-            //    characterController.Gimmick = true;
-            //}
-
-            //characterController.JumpStand = true;
             m_rb.AddForce(new Vector3(0, m_jumpForce, 0), ForceMode.Impulse);
         }
     }

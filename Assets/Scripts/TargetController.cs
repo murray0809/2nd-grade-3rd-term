@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ワイヤーを繋げるオブジェクトのスクリプト
+/// </summary>
 [RequireComponent(typeof(Rigidbody))]
 
 public class TargetController : MonoBehaviour

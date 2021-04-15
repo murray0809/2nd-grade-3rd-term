@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// リザルトのスクリプト
+/// </summary>
 public class ResultManager : MonoBehaviour
 {
     Singleton singleton;
@@ -17,7 +20,6 @@ public class ResultManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Enter"))
         {
-            //singleton.stageClearCount++;
             SceneManager.LoadScene("StageSelect");
         }
     }

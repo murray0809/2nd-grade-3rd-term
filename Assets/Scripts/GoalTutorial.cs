@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// チュートリアル用のゴールスクリプト/後にゴールのスクリプトは一つにする予定
+/// </summary>
 public class GoalTutorial : MonoBehaviour
 {
     StageManager m_stageManager;

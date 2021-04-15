@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 大砲のスクリプト
+/// </summary>
 public class Canon : MonoBehaviour
 {
     [SerializeField] GameObject m_bullet = null;
     [SerializeField] Transform m_muzzle = null;
 
+    /// <summary>
+    /// 連射できないようにする為に設定
+    /// </summary>
     private GameObject m_nowBulllet = null;
 
     private bool m_canShot = false;
@@ -24,6 +30,10 @@ public class Canon : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// プレイヤーが大砲に触れている時に発射できるようにする
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -32,6 +42,10 @@ public class Canon : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// プレイヤーが大砲から離れた時に発射できないようにする
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))

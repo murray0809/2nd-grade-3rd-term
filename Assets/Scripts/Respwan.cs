@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// リスポーンのスクリプト
+/// </summary>
 public class Respwan : MonoBehaviour
 {
     [SerializeField] Transform m_respwan;
@@ -20,10 +23,13 @@ public class Respwan : MonoBehaviour
 
     void Respawn()
     {
-        //Instantiate(m_respawnPlayer, m_respwan.position, Quaternion.identity);
         m_player.transform.position = m_respwan.position;
     }
 
+    /// <summary>
+    /// キルゾーンに当たった時の処理
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
