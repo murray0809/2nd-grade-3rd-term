@@ -34,7 +34,7 @@ public class TargetManager : MonoBehaviour
     /// <summary>
     /// ワイヤーが引っ掛かっているかどうか
     /// </summary>
-    bool m_connecting = false;
+    private bool m_connecting = false;
     public bool Connecting { get { return m_connecting; } }
 
     TargetController m_targetController;

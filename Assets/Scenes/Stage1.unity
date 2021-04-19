@@ -2151,7 +2151,7 @@ PrefabInstance:
     - target: {fileID: 7329988721568301874, guid: 3371dab3eb3b54fd7ab0cc53508333c0,
         type: 3}
       propertyPath: m_Name
-      value: Gimmick3
+      value: Wire
       objectReference: {fileID: 0}
     - target: {fileID: 7329988721568301875, guid: 3371dab3eb3b54fd7ab0cc53508333c0,
         type: 3}

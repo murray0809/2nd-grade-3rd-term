@@ -42,9 +42,14 @@ public class CharacterController : MonoBehaviour
     bool m_canMoveLane = false;
     bool m_moveLaneFlag = true;
 
+    [SerializeField] GameObject m_wireTarget;
+    TargetManager targetManager;
+
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
+        m_wireTarget = GameObject.Find("Wire");
+        targetManager = m_wireTarget.GetComponent<TargetManager>();
     }
 
     void Update()
@@ -89,17 +94,28 @@ public class CharacterController : MonoBehaviour
         }
 
         //ジャンプ中の移動
-        if (!m_canJump)
+        if (!m_canJump && !targetManager.Connecting)
         {
             if (Input.GetButtonDown("Right") && m_canJumpMove)
             {
                 m_rb.AddForce(new Vector3(3, 0, 0), ForceMode.Impulse);
                 m_canJumpMove = false;
             }
-            if (Input.GetButtonDown("Left") && m_canJumpMove)
+            else if (Input.GetButtonDown("Left") && m_canJumpMove)
             {
                 m_rb.AddForce(new Vector3(-3, 0, 0), ForceMode.Impulse);
                 m_canJumpMove = false;
+            }
+        }
+        else if (targetManager.Connecting)
+        {
+            if (Input.GetButtonDown("Right"))
+            {
+                m_rb.AddForce(new Vector3(1, 0, 0), ForceMode.Impulse);
+            }
+            else if (Input.GetButtonDown("Left"))
+            {
+                m_rb.AddForce(new Vector3(-1, 0, 0), ForceMode.Impulse);
             }
         }
 
