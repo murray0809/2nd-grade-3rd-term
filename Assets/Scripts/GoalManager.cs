@@ -10,8 +10,15 @@ public class GoalManager : MonoBehaviour
 {
     StageManager m_stageManager;
 
+    Clear m_clearMode;
+
+    Singleton singleton;
+
     void Start()
     {
+        singleton = Singleton.Instance;
+        m_clearMode = singleton.m_clearMode;
+        Debug.Log(singleton.m_stageClearCount);
         m_stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
     }
 
@@ -25,9 +32,21 @@ public class GoalManager : MonoBehaviour
     /// </summary>
     void Goal()
     {
-        if (m_stageManager.KeyCount >= 3)
+        switch (m_clearMode)
         {
-            SceneManager.LoadScene("Result");
+            case Clear.Tutorial:
+                SceneManager.LoadScene("Result");
+                break;
+
+            case Clear.Key:
+                if (m_stageManager.KeyCount >= 3)
+                {
+                    SceneManager.LoadScene("Result");
+                }
+                break;
+
+            case Clear.Time:
+                break;
         }
     }
 

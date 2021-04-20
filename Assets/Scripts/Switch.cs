@@ -10,8 +10,10 @@ public class Switch : MonoBehaviour
     [SerializeField] GameObject m_door;
     [SerializeField] GameObject m_particle;
 
-    [SerializeField]GameObject m_mainCamera;
-    [SerializeField]GameObject m_otherCamera;
+    [SerializeField] GameObject m_mainCamera;
+    [SerializeField] GameObject m_otherCamera;
+
+    private bool m_canBreak = false;
 
     void Start()
     {
@@ -37,11 +39,15 @@ public class Switch : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         m_otherCamera.SetActive(false);
         m_mainCamera.SetActive(true);
+        m_canBreak = true;
     }
 
     void Update()
     {
-        
+        if (m_canBreak)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

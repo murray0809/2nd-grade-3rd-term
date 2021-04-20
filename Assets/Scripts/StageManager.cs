@@ -19,6 +19,8 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] Image[] m_keyImage;
 
+    Singleton singleton;
+
     void Awake()
     {
         Instantiate(m_player, m_spwan.position, Quaternion.identity);
@@ -26,12 +28,18 @@ public class StageManager : MonoBehaviour
 
     void Start()
     {
-        m_keyImage = new Image[m_key];
+        singleton = Singleton.Instance;
+        Debug.Log(singleton.m_clearMode);
 
-        for (int i = 0; i < m_key; i++)
+        if (singleton.m_clearMode == Clear.Key)
         {
-            m_keyImage[i] = GameObject.Find("Key" + (i + 1)).GetComponent<Image>();
-            m_keyImage[i].enabled = false;
+            m_keyImage = new Image[m_key];
+
+            for (int i = 0; i < m_key; i++)
+            {
+                m_keyImage[i] = GameObject.Find("Key" + (i + 1)).GetComponent<Image>();
+                m_keyImage[i].enabled = false;
+            }
         }
     }
 

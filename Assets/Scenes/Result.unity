@@ -640,6 +640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d32eb850ef3714f23a88a0ed9897489b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_message: {fileID: 0}
 --- !u!4 &1700049215
 Transform:
   m_ObjectHideFlags: 0
@@ -666,7 +667,7 @@ GameObject:
   - component: {fileID: 1870417788}
   - component: {fileID: 1870417787}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -723,7 +724,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u30B9\u30C6\u30FC\u30B82\u306F\u88FD\u4F5C\u4E2D\u3067\u3059"
+  m_Text: 
 --- !u!222 &1870417788
 CanvasRenderer:
   m_ObjectHideFlags: 0

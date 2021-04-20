@@ -16,6 +16,7 @@ public class StageSelect : MonoBehaviour
     [SerializeField] GameObject m_check;
     [SerializeField] Button[] m_startBack = new Button[2];
 
+    //ステージ決定画面が表示されているかどうか
     private bool m_checked = false;
     private bool m_yes = true;
 
@@ -31,18 +32,18 @@ public class StageSelect : MonoBehaviour
         singleton = Singleton.Instance;
         Debug.Log(singleton.m_stageClearCount);
 
-        m_stageSelect[0] = GameObject.Find("Tutorial").GetComponent<Button>();
-
-        for (int i = 1; i < 12; i++)
+        for (int i = 0; i < 12; i++)
         {
             m_stageSelect[i] = GameObject.Find("Stage" + i).GetComponent<Button>();
         }
 
-        for (int i = 2; i < 12; i++)
+        //全てのステージボタンを選択不可にする
+        for (int i = 0; i < 12; i++)
         {
             m_stageSelect[i].interactable = false;
         }
 
+        //ステージ選択可能な箇所を選択できるようにする
         for (int i = 0; i < singleton.m_stageClearCount + 1; i++)
         {
             m_stageSelect[i].interactable = true;
@@ -84,7 +85,7 @@ public class StageSelect : MonoBehaviour
             Select(m_selectNumber);
         }
 
-        if (Input.GetButtonDown("Enter") && !m_checked)
+        if (Input.GetButtonDown("Enter") && !m_checked && m_selectNumber <= singleton.m_stageClearCount)
         {
             Check();
         }
@@ -208,9 +209,11 @@ public class StageSelect : MonoBehaviour
         switch (number)
         {
             case 0:
+                singleton.m_clearMode = Clear.Tutorial;
                 SceneManager.LoadScene("Tutorial");
                 break;
             case 1:
+                singleton.m_clearMode = Clear.Key;
                 SceneManager.LoadScene("Stage1");
                 break;
             case 2:
