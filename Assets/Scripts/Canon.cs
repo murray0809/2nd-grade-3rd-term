@@ -10,6 +10,10 @@ public class Canon : MonoBehaviour
     [SerializeField] GameObject m_bullet = null;
     [SerializeField] Transform m_muzzle = null;
 
+    [SerializeField] GameObject m_rightWeel;
+    [SerializeField] GameObject m_leftWeel;
+
+    [SerializeField] float m_weelSpeed;
     /// <summary>
     /// 連射できないようにする為に設定
     /// </summary>
@@ -17,13 +21,23 @@ public class Canon : MonoBehaviour
 
     private bool m_canShot = false;
 
+    private GameObject m_player;
+
+    CharacterController m_characterController;
+
     void Start()
     {
-        
+        m_player = GameObject.FindGameObjectWithTag("Player");
+        m_characterController = m_player.GetComponent<CharacterController>();
     }
 
     void Update()
     {
+        if (m_characterController.Moving)
+        {
+            Weel();
+        }
+
         if (Input.GetButtonDown("Enter") && !m_nowBulllet && m_canShot)
         {
             m_nowBulllet = Instantiate(m_bullet, m_muzzle.position, Quaternion.identity);
@@ -52,5 +66,23 @@ public class Canon : MonoBehaviour
         {
             m_canShot = false;
         }
+    }
+
+    /// <summary>
+    /// 車輪を回転させる
+    /// </summary>
+    private void Weel()
+    {
+        Transform rightWeelTransform = m_rightWeel.transform;
+
+        Vector3 rightLocalAngle = rightWeelTransform.localEulerAngles;
+        rightLocalAngle.y += m_weelSpeed;
+        rightWeelTransform.localEulerAngles = rightLocalAngle;
+
+        Transform leftWeelTransform = m_leftWeel.transform;
+
+        Vector3 leftLocalAngle = leftWeelTransform.localEulerAngles;
+        leftLocalAngle.y += m_weelSpeed;
+        leftWeelTransform.localEulerAngles = leftLocalAngle;
     }
 }

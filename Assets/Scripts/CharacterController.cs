@@ -35,6 +35,9 @@ public class CharacterController : MonoBehaviour
     private bool m_canMove = true;
     public bool CanMove { get { return m_canMove; } set { m_canMove = value; } }
 
+    private bool m_moving = false;
+    public bool Moving { get { return m_moving; } }
+
     private bool m_canJumpMove = false;
 
     [SerializeField] Lane m_mode = Lane.Lane2;
@@ -69,6 +72,14 @@ public class CharacterController : MonoBehaviour
             Vector3 vel = m_rb.velocity;
             vel.x = h * m_moveSpeed;
             m_rb.velocity = vel;
+            if (m_catch && vel.x > 0 || m_catch && vel.x < 0)
+            {
+                m_moving = true;
+            }
+            else
+            {
+                m_moving = false;
+            }
         }
 
         //手前と奥への移動
