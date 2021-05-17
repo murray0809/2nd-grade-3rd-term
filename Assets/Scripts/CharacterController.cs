@@ -41,12 +41,15 @@ public class CharacterController : MonoBehaviour
     private bool m_canJumpMove = false;
 
     [SerializeField] Lane m_mode = Lane.Lane2;
+    [SerializeField] float m_lanePos;
 
     bool m_canMoveLane = false;
     bool m_moveLaneFlag = true;
 
     [SerializeField] GameObject m_wireTarget;
     TargetManager targetManager;
+
+    [SerializeField] GameObject m_model;
 
     void Start()
     {
@@ -64,14 +67,38 @@ public class CharacterController : MonoBehaviour
 
         float h = Input.GetAxisRaw("Horizontal");
 
+        if (h > 0)
+        {
+            Transform myTransform = m_model.transform;
+
+            // ワールド座標を基準に、回転を取得
+            Vector3 worldAngle = myTransform.eulerAngles;
+            worldAngle.y = 90f; // ワールド座標を基準に、y軸を軸にした回転を10度に変更
+            myTransform.eulerAngles = worldAngle; // 回転角度を設定
+        }
+        else if(h < 0)
+        {
+            Transform myTransform = m_model.transform;
+
+            // ワールド座標を基準に、回転を取得
+            Vector3 worldAngle = myTransform.eulerAngles;
+            worldAngle.y = -90f; // ワールド座標を基準に、y軸を軸にした回転を10度に変更
+            myTransform.eulerAngles = worldAngle; // 回転角度を設定
+        }
+
         m_nowPos = transform.position;
 
         //左右への移動
-        if (!m_anim && m_canJump)
+        if (m_anim && m_canJump)
         {
             Vector3 vel = m_rb.velocity;
+
             vel.x = h * m_moveSpeed;
+
             m_rb.velocity = vel;
+
+            m_anim.SetFloat("Run", h);
+
             if (m_catch && vel.x > 0 || m_catch && vel.x < 0)
             {
                 m_moving = true;
@@ -142,6 +169,7 @@ public class CharacterController : MonoBehaviour
                 m_catchObject.transform.SetParent(null);
             }
         }
+
     }
 
     /// <summary>
@@ -155,9 +183,9 @@ public class CharacterController : MonoBehaviour
             switch (m_mode)
             {
                 case Lane.Lane2:
-                    if (transform.position.z > 1.2f)
+                    if (transform.position.z > m_lanePos)
                     {
-                        m_nowPos.z = 1.2f;
+                        m_nowPos.z = m_lanePos;
                         transform.position = m_nowPos;
                         m_rb.isKinematic = false;
                         m_canMoveLane = false;
@@ -194,9 +222,9 @@ public class CharacterController : MonoBehaviour
                     }
                     break;
                 case Lane.Lane2:
-                    if (transform.position.z < -1.2f)
+                    if (transform.position.z < -1 * m_lanePos)
                     {
-                        m_nowPos.z = -1.2f;
+                        m_nowPos.z = -1 * m_lanePos;
                         transform.position = m_nowPos;
                         m_rb.isKinematic = false;
                         m_canMoveLane = false;

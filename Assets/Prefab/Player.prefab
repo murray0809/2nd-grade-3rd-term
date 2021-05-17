@@ -225,3 +225,7 @@ MonoBehaviour:
   m_anim: {fileID: 0}
   m_catchObject: {fileID: 0}
   m_mode: 1
+  m_lanePos: 0
+  m_wireTarget: {fileID: 0}
+  m_model: {fileID: 0}
+  zAdjust: -5

@@ -2604,7 +2604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0f1a464ae0904feeaadaf48efd7d2d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_player: {fileID: 884394568260042595, guid: 0ac23980739be994ca73957e0f13abfe, type: 3}
+  m_player: {fileID: 767027073319894516, guid: 71c51718e38444964807c7efc85a8a88, type: 3}
   m_spwan: {fileID: 1606096705}
   m_key: 3
   m_keyImage: []
