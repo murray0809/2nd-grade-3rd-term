@@ -31,20 +31,20 @@ public class CameraController : MonoBehaviour
         myPos.x = xPos;
 
         float yPos;
-        if (playerController.Jumping)
-        {
-            yPos = m_player.transform.position.y * 100;
-            yPos = Mathf.Floor(yPos);
-            yPos = yPos / 100;
-            myPos.y = yPos + m_addY;
-        }
-        else
-        {
-            yPos = m_player.transform.position.y * 10;
-            yPos = Mathf.Floor(yPos);
-            yPos = yPos / 10;
-            myPos.y = yPos + m_addY;
-        }
+        //if (playerController.Jumping)
+        //{
+        //    yPos = m_player.transform.position.y * 100;
+        //    yPos = Mathf.Floor(yPos);
+        //    yPos = yPos / 100;
+        //    myPos.y = yPos + m_addY;
+        //}
+        //else
+        //{
+        //    yPos = m_player.transform.position.y * 10;
+        //    yPos = Mathf.Floor(yPos);
+        //    yPos = yPos / 10;
+        //    myPos.y = yPos + m_addY;
+        //}
         
         float zPos = m_player.transform.position.z;
         myPos.z = zPos + m_addZ;
