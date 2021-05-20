@@ -7,16 +7,28 @@ using UnityEngine;
 /// </summary>
 public class WireLine : MonoBehaviour
 {
+    /// <summary>
+    /// プレイヤーのオブジェクト
+    /// </summary>
     [SerializeField] GameObject m_player;
+    /// <summary>
+    /// ワイヤーを繋げるオブジェクト
+    /// </summary>
     [SerializeField] GameObject m_target;
 
     LineRenderer m_lineRenderer;
 
-    TargetManager m_targetManager;
+    /// <summary>
+    /// 線の最初の太さ
+    /// </summary>
+    [SerializeField] float m_lineStartWidth = 0.05f;
+
+    /// <summary>
+    /// 線の終わりの太さ
+    /// </summary>
+    [SerializeField] float m_lineEndWidth = 0.05f;
 
     PlayerController playerController;
-
-    bool test = false;
 
     void Start()
     {
@@ -24,34 +36,20 @@ public class WireLine : MonoBehaviour
 
         playerController = m_player.GetComponent<PlayerController>();
 
-        m_targetManager = GetComponent<TargetManager>();
-
         m_lineRenderer = GetComponent<LineRenderer>();
     }
 
     
     void Update()
     {
-        //if (m_targetManager.Connecting)
-        //{
-        //    m_lineRenderer.SetPosition(0, m_targetManager.PlayerPos);
-        //    m_lineRenderer.SetPosition(1, m_targetManager.TargetPos);
-
-        //    m_lineRenderer.startWidth = 0.1f;
-        //    m_lineRenderer.endWidth = 0.1f;
-        //}
-        //else
-        //{
-        //    m_lineRenderer.startWidth = 0;
-        //    m_lineRenderer.endWidth = 0;
-        //}
+        //ワイヤーが繋がっている間はプレイヤーとターゲットの間に線を引く
         if (playerController.Connecting)
         {
             m_lineRenderer.SetPosition(0, playerController.WirePos.transform.position);
             m_lineRenderer.SetPosition(1, playerController.TargetObject.transform.position);
 
-            m_lineRenderer.startWidth = 0.05f;
-            m_lineRenderer.endWidth = 0.05f;
+            m_lineRenderer.startWidth = m_lineStartWidth;
+            m_lineRenderer.endWidth = m_lineEndWidth;
         }
         else
         {

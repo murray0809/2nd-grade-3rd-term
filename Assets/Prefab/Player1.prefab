@@ -65,6 +65,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_jumpPower: 3
   m_moveSpeed: 3
+  m_mode: 1
   m_anim: {fileID: 9500000, guid: e98d03431d919284ebedb75777915ba5, type: 3}
   m_model: {fileID: 767027073381802366}
   m_movingObject: {fileID: 0}
@@ -178,9 +179,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.22
-  m_Height: 1
+  m_Height: 0.92
   m_Direction: 1
-  m_Center: {x: 0, y: 0.51, z: 0}
+  m_Center: {x: 0, y: 0.45, z: 0}
 --- !u!1 &2980889413379304241
 GameObject:
   m_ObjectHideFlags: 0

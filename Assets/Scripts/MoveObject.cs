@@ -20,7 +20,7 @@ public class MoveObject : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && !playerController.MovingObject)
         {
             playerController.MovingObject = this.gameObject;
         }
@@ -28,7 +28,7 @@ public class MoveObject : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && playerController.MovingObject)
         {
             playerController.MovingObject = null;
         }

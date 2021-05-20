@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] float m_moveSpeed = 5f;
 
+    [SerializeField] PlayerLane m_mode = PlayerLane.Lane2;
+
     [SerializeField] Animator m_anim;
 
     [SerializeField] GameObject m_model;
@@ -36,25 +38,49 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private bool m_rightDirection = true;
 
+    TargetObject[] targets;
+
     ConfigurableJoint m_joint;
 
     private bool m_connecting = false;
     public bool Connecting { get { return m_connecting; } }
 
+    /// <summary>
+    /// ジャンプしているかどうか
+    /// </summary>
+    private bool m_jumping = false;
+
+    bool m_test = false;
+
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
+        m_rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
         m_anim = GetComponentInChildren<Animator>();
         m_targetObject = GetComponent<TargetObject>();
         m_wireSet = GameObject.FindGameObjectWithTag("Wire");
         m_wirePos = GameObject.FindGameObjectWithTag("WirePos");
         m_joint = GetComponent<ConfigurableJoint>();
+
+        m_mode = PlayerLane.Lane2;
+
+        //シーン内にある全てのワイヤーのターゲットになるオブジェクトを取得する
+        if (m_wireSet)
+        {
+            targets = m_wireSet.GetComponentsInChildren<TargetObject>();
+        }
     }
 
     void Update()
     {
-        GetTarget();
-
+        if (m_wireSet)
+        {
+            GetTarget();
+        }
+        
+        //画面内にワイヤーのターゲットになるオブジェクトがあれば
+        //プレイヤーに一番近いオブジェクトを取得する
         if (m_trgetList.Count > 0)
         {
             GetNearTarget();
@@ -66,6 +92,7 @@ public class PlayerController : MonoBehaviour
 
         float h = Input.GetAxisRaw("Horizontal");
 
+        //左右の向きの変更
         if (Input.GetButtonDown("Right") && !m_rightDirection)
         {
             m_rightDirection = true;
@@ -95,35 +122,50 @@ public class PlayerController : MonoBehaviour
             m_anim.SetFloat("Run", h);
         }
 
+        //手前と奥の移動
+        if (Input.GetButtonDown("Down") && (m_mode == PlayerLane.Lane1 || m_mode == PlayerLane.Lane2))
+        {
+            m_test = false;
+            m_rb.constraints = RigidbodyConstraints.FreezeRotation;
+            m_rb.AddForce(new Vector3(0, 0, -1 * m_moveSpeed), ForceMode.Impulse);
+            
+        }
+        else if (Input.GetButtonDown("Up") && (m_mode == PlayerLane.Lane2 || m_mode == PlayerLane.Lane3))
+        {
+            m_test = true;
+            m_rb.constraints = RigidbodyConstraints.FreezeRotation;
+            m_rb.AddForce(new Vector3(0, 0, m_moveSpeed), ForceMode.Impulse);
+            
+        }
+
+        MoveLane(m_test);
+
         //ジャンプ処理
         if (Input.GetButtonDown("Jump"))
         {
+            m_jumping = true;
+
             m_rb.AddForce(new Vector3(0, m_jumpPower, 0), ForceMode.Impulse);
 
             m_anim.SetBool("Jump",true);
         }
 
+        //動かせるオブジェクトを動かす
         if (m_movingObject)
         {
             if ((Input.GetButton("RightCommand")))
             {
                 m_movingObject.transform.SetParent(transform);
             }
-            else
+            else if((Input.GetButtonUp("RightCommand")))
             {
                 m_movingObject.transform.SetParent(null);
+                m_movingObject = null;
             }
         }
 
-        //if ((Input.GetButtonDown("RightCommand")))
-        //{
-        //    float m_distance = Vector3.Distance(transform.position, m_targetObject.transform.position);
-
-        //    m_joint.maxDistance = m_distance;
-        //}
-        
-
-        if ((Input.GetButton("RightCommand")))
+        //ワイヤーを繋げる
+        if ((Input.GetButton("RightCommand")) && m_targetObject && m_jumping)
         {
             Rigidbody rb = m_targetObject.GetComponent<Rigidbody>();
 
@@ -151,6 +193,8 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         m_anim.SetBool("Jump", false);
+
+        m_jumping = false;
     }
 
     //private void OnCollisionExit(Collision collision)
@@ -185,14 +229,11 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// ターゲットを取得
+    /// ワイヤーのターゲットを取得
     /// </summary>
     private void GetTarget()
     {
         m_trgetList.Clear();
-
-        //子オブジェクトを取得
-        TargetObject[] targets = m_wireSet.GetComponentsInChildren<TargetObject>();
 
         //画面内にあるものだけをリストに追加
         foreach (TargetObject t in targets)
@@ -205,7 +246,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// プレイヤーから最も近いターゲットを取得
+    /// プレイヤーから最も近いワイヤーのターゲットを取得
     /// </summary>
     private void GetNearTarget()
     {
@@ -258,4 +299,100 @@ public class PlayerController : MonoBehaviour
             wirePos.localPosition = pos;
         }
     }
+
+    /// <summary>
+    /// レーンを変更する
+    /// </summary>
+    /// <param name="test"></param>
+    void MoveLane(bool test)
+    {
+        if (test)
+        {
+            switch (m_mode)
+            {
+                case PlayerLane.Lane2:
+                    if (transform.position.z > 0.5f)
+                    {
+                        Transform myTransform = this.transform;
+
+                        Vector3 myPos = myTransform.transform.position;
+
+                        myPos.z = 0.5f;
+
+                        myTransform.transform.position = myPos;
+
+                        m_rb.constraints =
+                            RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+                        m_mode = PlayerLane.Lane1;
+                    }
+                    break;
+                case PlayerLane.Lane3:
+                    if (transform.position.z > 0)
+                    {
+                        Transform myTransform = this.transform;
+
+                        Vector3 myPos = myTransform.transform.position;
+
+                        myPos.z = 0;
+
+                        myTransform.transform.position = myPos;
+
+                        m_rb.constraints =
+                            RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+                        m_mode = PlayerLane.Lane2;
+                    }
+                    break;
+            }
+        }
+        else
+        {
+            switch (m_mode)
+            {
+                case PlayerLane.Lane1:
+                    if (transform.position.z < 0)
+                    {
+                        Transform myTransform = this.transform;
+
+                        Vector3 myPos = myTransform.transform.position;
+
+                        myPos.z = 0;
+
+                        myTransform.transform.position = myPos;
+
+                        m_rb.constraints =
+                            RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+                        m_mode = PlayerLane.Lane2;
+                    }
+
+                    break;
+                case PlayerLane.Lane2:
+                    if (transform.position.z < -0.5f)
+                    {
+                        Transform myTransform = this.transform;
+
+                        Vector3 myPos = myTransform.transform.position;
+
+                        myPos.z = -0.5f;
+
+                        myTransform.transform.position = myPos;
+
+                        m_rb.constraints =
+                            RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+                        m_mode = PlayerLane.Lane3;
+                    }
+                    break;
+            }
+        }
+    }
+}
+
+public enum PlayerLane
+{
+    Lane1,
+    Lane2,
+    Lane3,
 }
