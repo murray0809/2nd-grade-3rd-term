@@ -45,18 +45,18 @@ public class WireLine : MonoBehaviour
         //    m_lineRenderer.startWidth = 0;
         //    m_lineRenderer.endWidth = 0;
         //}
-        if (playerController.TargetList.Count == 0)
-        {
-            m_lineRenderer.startWidth = 0;
-            m_lineRenderer.endWidth = 0;
-        }
-        else
+        if (playerController.Connecting)
         {
             m_lineRenderer.SetPosition(0, playerController.WirePos.transform.position);
             m_lineRenderer.SetPosition(1, playerController.TargetObject.transform.position);
 
-            m_lineRenderer.startWidth = 0.1f;
-            m_lineRenderer.endWidth = 0.1f;
+            m_lineRenderer.startWidth = 0.05f;
+            m_lineRenderer.endWidth = 0.05f;
+        }
+        else
+        {
+            m_lineRenderer.startWidth = 0;
+            m_lineRenderer.endWidth = 0;
         }
         
     }

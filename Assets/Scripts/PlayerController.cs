@@ -36,6 +36,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private bool m_rightDirection = true;
 
+    ConfigurableJoint m_joint;
+
+    private bool m_connecting = false;
+    public bool Connecting { get { return m_connecting; } }
+
     void Start()
     {
         m_rb = GetComponent<Rigidbody>();
@@ -43,6 +48,7 @@ public class PlayerController : MonoBehaviour
         m_targetObject = GetComponent<TargetObject>();
         m_wireSet = GameObject.FindGameObjectWithTag("Wire");
         m_wirePos = GameObject.FindGameObjectWithTag("WirePos");
+        m_joint = GetComponent<ConfigurableJoint>();
     }
 
     void Update()
@@ -78,7 +84,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //左右への移動
-        if (m_anim)
+        if (m_anim && !m_connecting)
         {
             Vector3 vel = m_rb.velocity;
 
@@ -107,6 +113,38 @@ public class PlayerController : MonoBehaviour
             {
                 m_movingObject.transform.SetParent(null);
             }
+        }
+
+        //if ((Input.GetButtonDown("RightCommand")))
+        //{
+        //    float m_distance = Vector3.Distance(transform.position, m_targetObject.transform.position);
+
+        //    m_joint.maxDistance = m_distance;
+        //}
+        
+
+        if ((Input.GetButton("RightCommand")))
+        {
+            Rigidbody rb = m_targetObject.GetComponent<Rigidbody>();
+
+            if (rb)
+            {
+                m_connecting = true;
+
+                m_joint.connectedBody = rb;
+                m_joint.xMotion = ConfigurableJointMotion.Limited;
+                m_joint.yMotion = ConfigurableJointMotion.Limited;
+            }
+        }
+
+        //ワイヤーとターゲットを切り離す
+        if (Input.GetButtonUp("RightCommand"))
+        {
+            m_joint.connectedBody = null;
+            m_joint.xMotion = ConfigurableJointMotion.Free;
+            m_joint.yMotion = ConfigurableJointMotion.Free;
+
+            m_connecting = false;
         }
     }
 

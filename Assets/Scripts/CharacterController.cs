@@ -89,7 +89,7 @@ public class CharacterController : MonoBehaviour
         m_nowPos = transform.position;
 
         //左右への移動
-        if (m_anim && m_canJump)
+        if (!m_anim && m_canJump)
         {
             Vector3 vel = m_rb.velocity;
 
