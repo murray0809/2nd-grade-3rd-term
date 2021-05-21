@@ -28,7 +28,7 @@ public class MoveObject : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player") && playerController.MovingObject)
+        if (collision.gameObject.CompareTag("Player") && !playerController.Catching)
         {
             playerController.MovingObject = null;
         }

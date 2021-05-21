@@ -50,6 +50,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private bool m_jumping = false;
 
+    private bool m_catching = false;
+    public bool Catching { get { return m_catching; } }
+
+    [SerializeField] MoveObject[] m_moveObject;
+
     bool m_test = false;
 
     void Start()
@@ -70,6 +75,9 @@ public class PlayerController : MonoBehaviour
         {
             targets = m_wireSet.GetComponentsInChildren<TargetObject>();
         }
+
+        //Hierarchy上にActiveで表示されているGameObjectを配列で受け取る
+        m_moveObject = FindObjectsOfType(typeof(MoveObject)) as MoveObject[];
     }
 
     void Update()
@@ -93,7 +101,7 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
 
         //左右の向きの変更
-        if (Input.GetButtonDown("Right") && !m_rightDirection)
+        if (Input.GetButtonDown("Right") )
         {
             m_rightDirection = true;
 
@@ -101,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
             WirePosChange(m_rightDirection);
         }
-        else if (Input.GetButtonDown("Left") && m_rightDirection)
+        else if (Input.GetButtonDown("Left") )
         {
             m_rightDirection = false;
 
@@ -128,14 +136,32 @@ public class PlayerController : MonoBehaviour
             m_test = false;
             m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             m_rb.AddForce(new Vector3(0, 0, -1 * m_moveSpeed), ForceMode.Impulse);
-            
+
+            Transform myTransform = m_model.transform;
+
+            Vector3 worldAngle = myTransform.eulerAngles;
+
+            worldAngle.y = 180f;
+
+            myTransform.eulerAngles = worldAngle;
+
+            m_anim.SetFloat("Run", 1);
         }
         else if (Input.GetButtonDown("Up") && (m_mode == PlayerLane.Lane2 || m_mode == PlayerLane.Lane3))
         {
             m_test = true;
             m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             m_rb.AddForce(new Vector3(0, 0, m_moveSpeed), ForceMode.Impulse);
-            
+
+            Transform myTransform = m_model.transform;
+
+            Vector3 worldAngle = myTransform.eulerAngles;
+
+            worldAngle.y = 0f;
+
+            myTransform.eulerAngles = worldAngle;
+
+            m_anim.SetFloat("Run", 1);
         }
 
         MoveLane(m_test);
@@ -155,12 +181,14 @@ public class PlayerController : MonoBehaviour
         {
             if ((Input.GetButton("RightCommand")))
             {
+                m_catching = true;
                 m_movingObject.transform.SetParent(transform);
             }
-            else if((Input.GetButtonUp("RightCommand")))
+            else if((Input.GetButtonUp("RightCommand")) && m_movingObject)
             {
                 m_movingObject.transform.SetParent(null);
                 m_movingObject = null;
+                m_catching = false;
             }
         }
 
@@ -188,6 +216,8 @@ public class PlayerController : MonoBehaviour
 
             m_connecting = false;
         }
+
+        Debug.Log(m_catching);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -195,15 +225,19 @@ public class PlayerController : MonoBehaviour
         m_anim.SetBool("Jump", false);
 
         m_jumping = false;
+
+        //if (collision.gameObject.CompareTag("MoveObject") && !m_movingObject)
+        //{
+        //    m_movingObject = collision.gameObject;
+        //}
     }
 
     //private void OnCollisionExit(Collision collision)
     //{
-    //    m_jumping = true;
-
-    //    m_anim.SetBool("Jump", true);
-
-    //    m_rb.constraints = RigidbodyConstraints.FreezeRotation;
+    //    if (!m_catching)
+    //    {
+    //        m_movingObject = null;
+    //    }
     //}
 
     /// <summary>
