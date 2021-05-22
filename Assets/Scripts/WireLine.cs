@@ -46,7 +46,7 @@ public class WireLine : MonoBehaviour
         if (playerController.Connecting)
         {
             m_lineRenderer.SetPosition(0, playerController.WirePos.transform.position);
-            m_lineRenderer.SetPosition(1, playerController.TargetObject.transform.position);
+            m_lineRenderer.SetPosition(1, playerController.ConnectingObject.transform.position);
 
             m_lineRenderer.startWidth = m_lineStartWidth;
             m_lineRenderer.endWidth = m_lineEndWidth;

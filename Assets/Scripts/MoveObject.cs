@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MoveObject : MonoBehaviour
 {
-    private bool test = false;
-
     PlayerController playerController;
 
     void Start()

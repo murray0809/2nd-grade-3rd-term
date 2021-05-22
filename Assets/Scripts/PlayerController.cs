@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerLane m_mode = PlayerLane.Lane2;
 
     [SerializeField] Animator m_anim;
+    public Animator Anim { get { return m_anim; } set { m_anim = value; } }
 
     [SerializeField] GameObject m_model;
 
@@ -22,8 +23,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] List<TargetObject> m_trgetList = new List<TargetObject>();
     public List<TargetObject> TargetList { get { return m_trgetList; } }
 
+    /// <summary>
+    /// プレイヤーから最も近いワイヤーを繋げられるオブジェクト
+    /// </summary>
     [SerializeField] TargetObject m_targetObject;
     public TargetObject TargetObject { get { return m_targetObject; } }
+
+    [SerializeField] TargetObject m_connectingObject;
+    public TargetObject ConnectingObject { get { return m_connectingObject; } }
 
     /// <summary>
     /// ワイヤーターゲットがまとまっているオブジェクト
@@ -34,6 +41,11 @@ public class PlayerController : MonoBehaviour
     public GameObject WirePos { get { return m_wirePos; } }
 
     /// <summary>
+    /// ワイヤーターゲットとプレイヤーの距離
+    /// </summary>
+    float m_targetDistance;
+
+    /// <summary>
     /// 右を向いているかどうか
     /// </summary>
     private bool m_rightDirection = true;
@@ -42,6 +54,9 @@ public class PlayerController : MonoBehaviour
 
     ConfigurableJoint m_joint;
 
+    /// <summary>
+    /// ワイヤーに繋がっているかどうか
+    /// </summary>
     private bool m_connecting = false;
     public bool Connecting { get { return m_connecting; } }
 
@@ -49,13 +64,18 @@ public class PlayerController : MonoBehaviour
     /// ジャンプしているかどうか
     /// </summary>
     private bool m_jumping = false;
+    public bool Jumping { get { return m_jumping; } set { m_jumping = value; } }
 
+    /// <summary>
+    /// ものを掴んでいるかどうか
+    /// </summary>
     private bool m_catching = false;
     public bool Catching { get { return m_catching; } }
 
-    [SerializeField] MoveObject[] m_moveObject;
-
-    bool m_test = false;
+    /// <summary>
+    /// 手前に動くかどうか
+    /// </summary>
+    private bool m_front = false;
 
     void Start()
     {
@@ -75,9 +95,6 @@ public class PlayerController : MonoBehaviour
         {
             targets = m_wireSet.GetComponentsInChildren<TargetObject>();
         }
-
-        //Hierarchy上にActiveで表示されているGameObjectを配列で受け取る
-        m_moveObject = FindObjectsOfType(typeof(MoveObject)) as MoveObject[];
     }
 
     void Update()
@@ -86,7 +103,7 @@ public class PlayerController : MonoBehaviour
         {
             GetTarget();
         }
-        
+       
         //画面内にワイヤーのターゲットになるオブジェクトがあれば
         //プレイヤーに一番近いオブジェクトを取得する
         if (m_trgetList.Count > 0)
@@ -96,6 +113,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             m_targetObject = null;
+            m_targetDistance = 0;
         }
 
         float h = Input.GetAxisRaw("Horizontal");
@@ -119,7 +137,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //左右への移動
-        if (m_anim && !m_connecting)
+        if (m_anim && !m_connecting && !m_jumping)
         {
             Vector3 vel = m_rb.velocity;
 
@@ -133,7 +151,7 @@ public class PlayerController : MonoBehaviour
         //手前と奥の移動
         if (Input.GetButtonDown("Down") && (m_mode == PlayerLane.Lane1 || m_mode == PlayerLane.Lane2))
         {
-            m_test = false;
+            m_front = false;
             m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             m_rb.AddForce(new Vector3(0, 0, -1 * m_moveSpeed), ForceMode.Impulse);
 
@@ -145,11 +163,13 @@ public class PlayerController : MonoBehaviour
 
             myTransform.eulerAngles = worldAngle;
 
-            m_anim.SetFloat("Run", 1);
+            m_anim.SetBool("MoveLane", true);
+
+            StartCoroutine(MoveLaneAnim());
         }
         else if (Input.GetButtonDown("Up") && (m_mode == PlayerLane.Lane2 || m_mode == PlayerLane.Lane3))
         {
-            m_test = true;
+            m_front = true;
             m_rb.constraints = RigidbodyConstraints.FreezeRotation;
             m_rb.AddForce(new Vector3(0, 0, m_moveSpeed), ForceMode.Impulse);
 
@@ -161,13 +181,15 @@ public class PlayerController : MonoBehaviour
 
             myTransform.eulerAngles = worldAngle;
 
-            m_anim.SetFloat("Run", 1);
+            m_anim.SetBool("MoveLane", true);
+
+            StartCoroutine(MoveLaneAnim());
         }
 
-        MoveLane(m_test);
+        MoveLane(m_front);
 
         //ジャンプ処理
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && !m_jumping)
         {
             m_jumping = true;
 
@@ -193,13 +215,16 @@ public class PlayerController : MonoBehaviour
         }
 
         //ワイヤーを繋げる
-        if ((Input.GetButton("RightCommand")) && m_targetObject && m_jumping)
+        if ((Input.GetButton("RightCommand")) && m_targetObject && m_jumping
+            && !m_connecting && m_targetDistance <= 3f)
         {
             Rigidbody rb = m_targetObject.GetComponent<Rigidbody>();
 
             if (rb)
             {
                 m_connecting = true;
+
+                m_connectingObject = m_targetObject;
 
                 m_joint.connectedBody = rb;
                 m_joint.xMotion = ConfigurableJointMotion.Limited;
@@ -214,10 +239,22 @@ public class PlayerController : MonoBehaviour
             m_joint.xMotion = ConfigurableJointMotion.Free;
             m_joint.yMotion = ConfigurableJointMotion.Free;
 
+            m_connectingObject = null;
+
             m_connecting = false;
         }
 
-        Debug.Log(m_catching);
+        if (m_connecting || m_jumping)
+        {
+            if (Input.GetButtonDown("Right"))
+            {
+                m_rb.AddForce(new Vector3(0.5f * m_moveSpeed, 0, 0), ForceMode.Impulse);
+            }
+            else if (Input.GetButtonDown("Left"))
+            {
+                m_rb.AddForce(new Vector3(-0.5f * m_moveSpeed, 0, 0), ForceMode.Impulse);
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -234,10 +271,7 @@ public class PlayerController : MonoBehaviour
 
     //private void OnCollisionExit(Collision collision)
     //{
-    //    if (!m_catching)
-    //    {
-    //        m_movingObject = null;
-    //    }
+    //    m_anim.SetBool("Jump", true);
     //}
 
     /// <summary>
@@ -307,6 +341,8 @@ public class PlayerController : MonoBehaviour
             }
 
             m_targetObject = m_trgetList[index];
+
+            m_targetDistance = Vector3.Distance(transform.position, m_targetObject.transform.position);
         }
     }
 
@@ -421,6 +457,19 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// 手前か奥に移動した時にアニメーションを呼ぶ
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator MoveLaneAnim()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        m_anim.SetBool("MoveLane", false);
+
+        yield return null;
     }
 }
 
