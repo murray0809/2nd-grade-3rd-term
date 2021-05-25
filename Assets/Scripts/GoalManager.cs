@@ -8,18 +8,18 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class GoalManager : MonoBehaviour
 {
-    StageManager m_stageManager;
+    //StageManager m_stageManager;
 
-    Clear m_clearMode;
+    //Clear m_clearMode;
 
-    Singleton singleton;
+    //Singleton singleton;
 
     void Start()
     {
-        singleton = Singleton.Instance;
-        m_clearMode = singleton.m_clearMode;
-        Debug.Log(singleton.m_stageClearCount);
-        m_stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
+    //    singleton = Singleton.Instance;
+    //    m_clearMode = singleton.m_clearMode;
+    //    Debug.Log(singleton.m_stageClearCount);
+    //    m_stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
     }
 
     void Update()
@@ -32,22 +32,22 @@ public class GoalManager : MonoBehaviour
     /// </summary>
     void Goal()
     {
-        switch (m_clearMode)
-        {
-            case Clear.Tutorial:
-                SceneManager.LoadScene("Result");
-                break;
+    //    switch (m_clearMode)
+    //    {
+    //        case Clear.Tutorial:
+    //            SceneManager.LoadScene("Result");
+    //            break;
 
-            case Clear.Key:
-                if (m_stageManager.KeyCount >= 3)
-                {
-                    SceneManager.LoadScene("Result");
-                }
-                break;
+    //        case Clear.Key:
+    //            if (m_stageManager.KeyCount >= 3)
+    //            {
+    //                SceneManager.LoadScene("Result");
+    //            }
+    //            break;
 
-            case Clear.Time:
-                break;
-        }
+    //        case Clear.Time:
+    //            break;
+    //    }
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class GoalManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Goal();
+            SceneManager.LoadScene("Result");
         }
     }
 }

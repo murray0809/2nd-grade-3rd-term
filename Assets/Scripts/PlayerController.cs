@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
     /// 右を向いているかどうか
     /// </summary>
     private bool m_rightDirection = true;
+    public bool RightDirection { get { return m_rightDirection; } }
 
     TargetObject[] targets;
 
@@ -76,6 +77,9 @@ public class PlayerController : MonoBehaviour
     /// 手前に動くかどうか
     /// </summary>
     private bool m_front = false;
+
+    private bool m_moving = false;
+    public bool Moving { get { return m_moving; } }
 
     void Start()
     {
@@ -117,6 +121,15 @@ public class PlayerController : MonoBehaviour
         }
 
         float h = Input.GetAxisRaw("Horizontal");
+
+        if (h > 0 || h < 0)
+        {
+            m_moving = true;
+        }
+        else
+        {
+            m_moving = false;
+        }
 
         //左右の向きの変更
         if (Input.GetButtonDown("Right") )
@@ -216,7 +229,7 @@ public class PlayerController : MonoBehaviour
 
         //ワイヤーを繋げる
         if ((Input.GetButton("RightCommand")) && m_targetObject && m_jumping
-            && !m_connecting && m_targetDistance <= 3f)
+            && !m_connecting && m_targetDistance <= 2.5f)
         {
             Rigidbody rb = m_targetObject.GetComponent<Rigidbody>();
 

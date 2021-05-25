@@ -16,12 +16,17 @@ public class Bullet : MonoBehaviour
 
     private GameObject m_mainCamera;
 
+    [SerializeField] GameObject m_wallCamera;
+
     void Start()
     {
         //弾が発射された時の処理
         m_mainCamera = GameObject.Find("Main Camera");
         m_mainCamera.SetActive(false);
 
+        m_wallCamera = GameObject.FindGameObjectWithTag("WallCamera");
+
+        m_direction = new Vector3(5f, 15f, 0);
         //弾を飛ばす処理
         m_rb = GetComponent<Rigidbody>();
         m_rb.AddForce(m_direction, ForceMode.Impulse);
@@ -32,13 +37,17 @@ public class Bullet : MonoBehaviour
         
     }
 
-    /// <summary>
-    /// 弾がヒットした時の処理
-    /// </summary>
-    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
-        m_mainCamera.SetActive(true);
+        if (collision.gameObject.CompareTag("BreakWall"))
+        {
+            m_wallCamera.SetActive(true);
+        }
+        else
+        {
+            m_mainCamera.SetActive(true);
+        }
+
         Destroy(this.gameObject);
     }
 }

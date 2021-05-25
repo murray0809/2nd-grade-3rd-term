@@ -4,19 +4,26 @@ using UnityEngine;
 
 public class MoveObject : MonoBehaviour
 {
-    PlayerController playerController;
+    public PlayerController playerController;
 
-    void Start()
+    [SerializeField] GameObject m_catchig;
+
+    public void Start()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        m_catchig = GameObject.FindGameObjectWithTag("Target");
+        m_catchig.SetActive(false);
     }
 
-    void Update()
+    public void Update()
     {
-        
+        if (playerController.Catching && playerController.MovingObject == this.gameObject)
+        {
+            m_catchig.SetActive(true);
+        }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player") && !playerController.MovingObject)
         {
@@ -24,11 +31,21 @@ public class MoveObject : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    public void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player") && !playerController.Catching)
         {
             playerController.MovingObject = null;
+        }
+
+        m_catchig.SetActive(false);
+    }
+
+    public void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            m_catchig.SetActive(true);
         }
     }
 }
