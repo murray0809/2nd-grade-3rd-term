@@ -6,6 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     Rigidbody m_rb;
 
+    /// <summary>
+    /// ジャンプ力
+    /// </summary>
     [SerializeField] float m_jumpPower = 5f;
 
     [SerializeField] float m_moveSpeed = 5f;
