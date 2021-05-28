@@ -12,7 +12,7 @@ public class Key : MonoBehaviour
 
     void Start()
     {
-        m_stage = GameObject.Find("StageManager");
+        m_stage = GameObject.FindGameObjectWithTag("StageManager");
         m_stageManager = m_stage.GetComponent<StageManager>();
     }
 

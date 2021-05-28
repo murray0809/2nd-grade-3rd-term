@@ -9,15 +9,11 @@ public class JumpStand : MonoBehaviour
 {
     [SerializeField] float m_jumpForce = 0;
 
-    private GameObject m_player;
-    Rigidbody m_rb;
-    CharacterController m_characterController;
+    PlayerController playerController;
 
     void Start()
     {
-        m_player = GameObject.FindGameObjectWithTag("Player");
-        m_rb = m_player.GetComponent<Rigidbody>();
-        m_characterController = m_player.GetComponent<CharacterController>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();  
     }
 
     void Update()
@@ -33,7 +29,9 @@ public class JumpStand : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            m_rb.AddForce(new Vector3(0, m_jumpForce, 0), ForceMode.Impulse);
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(0, m_jumpForce, 0, ForceMode.Impulse);
+            playerController.Jumping = true;
+            playerController.Anim.SetBool("Jump", true);
         }
     }
 }

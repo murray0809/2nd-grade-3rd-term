@@ -29,6 +29,7 @@ public class Canon : MonoBehaviour
     {
         m_player = GameObject.FindGameObjectWithTag("Player");
         m_characterController = m_player.GetComponent<CharacterController>();
+        
     }
 
     void Update()
