@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class GoalManager : MonoBehaviour
 {
-    //StageManager m_stageManager;
+    StageManager m_stageManager;
 
     //Clear m_clearMode;
 
@@ -19,7 +19,7 @@ public class GoalManager : MonoBehaviour
     //    singleton = Singleton.Instance;
     //    m_clearMode = singleton.m_clearMode;
     //    Debug.Log(singleton.m_stageClearCount);
-    //    m_stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
+        m_stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
     }
 
     void Update()
@@ -56,7 +56,7 @@ public class GoalManager : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && m_stageManager.KeyCount >= 3)
         {
             SceneManager.LoadScene("Result");
         }
