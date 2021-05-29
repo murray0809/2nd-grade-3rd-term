@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーを動かすスクリプト
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     Rigidbody m_rb;
@@ -11,18 +14,41 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     [SerializeField] float m_jumpPower = 5f;
 
+    /// <summary>
+    /// 動くスピード
+    /// </summary>
     [SerializeField] float m_moveSpeed = 5f;
 
+    /// <summary>
+    /// プレイヤーが今いるレーン
+    /// </summary>
     [SerializeField] PlayerLane m_mode = PlayerLane.Lane2;
 
+    /// <summary>
+    /// プレイヤーのアニメーション
+    /// </summary>
     [SerializeField] Animator m_anim;
     public Animator Anim { get { return m_anim; } set { m_anim = value; } }
 
+    /// <summary>
+    /// プレイヤーのモデル
+    /// </summary>
     [SerializeField] GameObject m_model;
 
+    /// <summary>
+    /// 動かせるオブジェクト
+    /// </summary>
     [SerializeField] GameObject m_movingObject;
     public GameObject MovingObject { get { return m_movingObject; } set { m_movingObject = value; } }
 
+    /// <summary>
+    /// シーン内にあるワイヤーを繋げられるオブジェクトを全て格納する配列
+    /// </summary>
+    TargetObject[] targets;
+
+    /// <summary>
+    /// 画面内にあるワイヤーを繋げられるオブジェクトを格納するリスト
+    /// </summary>
     [SerializeField] List<TargetObject> m_trgetList = new List<TargetObject>();
     public List<TargetObject> TargetList { get { return m_trgetList; } }
 
@@ -32,6 +58,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TargetObject m_targetObject;
     public TargetObject TargetObject { get { return m_targetObject; } }
 
+    /// <summary>
+    /// 今ワイヤーと繋がっているオブジェクト
+    /// </summary>
     [SerializeField] TargetObject m_connectingObject;
     public TargetObject ConnectingObject { get { return m_connectingObject; } }
 
@@ -40,6 +69,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     [SerializeField] GameObject m_wireSet;
 
+    /// <summary>
+    /// ワイヤーを飛ばす場所
+    /// </summary>
     [SerializeField] GameObject m_wirePos;
     public GameObject WirePos { get { return m_wirePos; } }
 
@@ -53,8 +85,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private bool m_rightDirection = true;
     public bool RightDirection { get { return m_rightDirection; } }
-
-    TargetObject[] targets;
 
     ConfigurableJoint m_joint;
 
@@ -81,6 +111,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private bool m_front = false;
 
+    /// <summary>
+    /// 今動いているかどうか
+    /// </summary>
     private bool m_moving = false;
     public bool Moving { get { return m_moving; } }
 
@@ -106,6 +139,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        //シーン内にある全てのワイヤーのターゲットになるオブジェクトがあればターゲットを取得する
         if (m_wireSet)
         {
             GetTarget();
@@ -260,6 +294,7 @@ public class PlayerController : MonoBehaviour
             m_connecting = false;
         }
 
+        //ワイヤーアクション中の移動
         if (m_connecting || m_jumping)
         {
             if (Input.GetButtonDown("Right"))
@@ -278,11 +313,6 @@ public class PlayerController : MonoBehaviour
         m_anim.SetBool("Jump", false);
 
         m_jumping = false;
-
-        //if (collision.gameObject.CompareTag("MoveObject") && !m_movingObject)
-        //{
-        //    m_movingObject = collision.gameObject;
-        //}
     }
 
     //private void OnCollisionExit(Collision collision)
@@ -336,8 +366,6 @@ public class PlayerController : MonoBehaviour
     {
         float minDistance = 0;
 
-        int index = 0;
-
         for (int i = 0; i < m_trgetList.Count; i++)
         {
             float distance = Vector3.Distance(transform.position, m_trgetList[i].transform.position);
@@ -345,18 +373,16 @@ public class PlayerController : MonoBehaviour
             if (i == 0)
             {
                 minDistance = distance;
-                index = i;
+                m_targetObject = m_trgetList[i];
             }
             else
             {
                 if (minDistance > distance)
                 {
                     minDistance = distance;
-                    index = i;
+                    m_targetObject = m_trgetList[i];
                 }
             }
-
-            m_targetObject = m_trgetList[index];
 
             m_targetDistance = Vector3.Distance(transform.position, m_targetObject.transform.position);
         }
