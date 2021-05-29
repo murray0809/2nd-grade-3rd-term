@@ -21,8 +21,6 @@ public class Wire1 : MonoBehaviour
 
     private bool m_onCamera = false;
 
-    CharacterController m_characterController;
-
     LineRenderer m_lineRenderer;
 
     float m_distanse;
@@ -32,7 +30,6 @@ public class Wire1 : MonoBehaviour
         m_player = GameObject.FindGameObjectWithTag("Player");
         m_rb = GetComponent<Rigidbody>();
         m_joint = GetComponent<ConfigurableJoint>();
-        m_characterController = m_player.GetComponent<CharacterController>();
 
         m_limit2.limit = 1f;
 
@@ -47,7 +44,7 @@ public class Wire1 : MonoBehaviour
         
         if (m_distanse < 7)
         {
-            if ((Input.GetButtonDown("RightCommand") || Input.GetButtonDown("RightCtrl")) && !m_characterController.CanJump)
+            if ((Input.GetButtonDown("RightCommand") || Input.GetButtonDown("RightCtrl")))
             {
                 m_limit.limit = Vector3.Distance(transform.position, m_player.transform.position);
                 m_joint.linearLimit = m_limit;
