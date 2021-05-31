@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
         //動かせるオブジェクトを動かす
         if (m_movingObject)
         {
-            if ((Input.GetButton("RightCommand")))
+            if ((Input.GetButton("RightCommand")) || (Input.GetButton("RightControl")))
             {
                 m_catching = true;
                 m_movingObject.transform.SetParent(transform);
@@ -265,7 +265,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //ワイヤーを繋げる
-        if ((Input.GetButton("RightCommand")) && m_targetObject && m_jumping
+        if (((Input.GetButton("RightCommand")) || (Input.GetButton("RightControl"))) && m_targetObject && m_jumping
             && !m_connecting && m_targetDistance <= 2.5f)
         {
             Rigidbody rb = m_targetObject.GetComponent<Rigidbody>();
@@ -283,7 +283,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //ワイヤーとターゲットを切り離す
-        if (Input.GetButtonUp("RightCommand"))
+        if (Input.GetButtonUp("RightCommand") || (Input.GetButton("RightControl")))
         {
             m_joint.connectedBody = null;
             m_joint.xMotion = ConfigurableJointMotion.Free;
