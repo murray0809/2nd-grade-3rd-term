@@ -29,9 +29,9 @@ public class StageManager : MonoBehaviour
     void Start()
     {
         singleton = Singleton.Instance;
-        Debug.Log(singleton.m_clearMode);
+        Debug.Log(singleton.NowStageMode);
 
-        if (singleton.m_clearMode == Clear.Key)
+        if (singleton.NowStageMode == Singleton.StageMode.Key)
         {
             m_keyImage = new Image[m_key];
 
@@ -41,11 +41,6 @@ public class StageManager : MonoBehaviour
                 m_keyImage[i].enabled = false;
             }
         }
-    }
-
-    void Update()
-    {
-        
     }
 
     /// <summary>

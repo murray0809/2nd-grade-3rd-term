@@ -8,11 +8,18 @@ public class Singleton
 
     public int m_stageClearCount = 1;
 
-    public Clear m_clearMode;
-   
-    private Singleton()
-    { // Private Constructor
+    private StageMode m_stageMode = StageMode.Tutorial;
+    public StageMode NowStageMode { get { return m_stageMode; } set { m_stageMode = value; } }
 
+    public enum StageMode
+    {
+        Tutorial,
+        Key,
+        TimeAttack,
+    }
+
+    private Singleton()
+    { 
         Debug.Log("Create SampleSingleton instance.");
     }
 

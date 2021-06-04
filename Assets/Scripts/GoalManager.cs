@@ -10,21 +10,12 @@ public class GoalManager : MonoBehaviour
 {
     StageManager m_stageManager;
 
-    //Clear m_clearMode;
-
-    //Singleton singleton;
+    Singleton singleton;
 
     void Start()
     {
-    //    singleton = Singleton.Instance;
-    //    m_clearMode = singleton.m_clearMode;
-    //    Debug.Log(singleton.m_stageClearCount);
+        singleton = Singleton.Instance;
         m_stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
-    }
-
-    void Update()
-    {
-        
     }
 
     /// <summary>
@@ -32,22 +23,22 @@ public class GoalManager : MonoBehaviour
     /// </summary>
     void Goal()
     {
-    //    switch (m_clearMode)
-    //    {
-    //        case Clear.Tutorial:
-    //            SceneManager.LoadScene("Result");
-    //            break;
+        switch (singleton.NowStageMode)
+        {
+            case Singleton.StageMode.Tutorial:
+                SceneManager.LoadScene("Result");
+                break;
 
-    //        case Clear.Key:
-    //            if (m_stageManager.KeyCount >= 3)
-    //            {
-    //                SceneManager.LoadScene("Result");
-    //            }
-    //            break;
+            case Singleton.StageMode.Key:
+                if (m_stageManager.KeyCount >= 3)
+                {
+                    SceneManager.LoadScene("Result");
+                }
+                break;
 
-    //        case Clear.Time:
-    //            break;
-    //    }
+            case Singleton.StageMode.TimeAttack:
+                break;
+        }
     }
 
     /// <summary>
@@ -56,9 +47,9 @@ public class GoalManager : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player") && m_stageManager.KeyCount >= 3)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene("Result");
+            Goal();
         }
     }
 }

@@ -23,14 +23,15 @@ public class StageSelect : MonoBehaviour
     [SerializeField] Text m_stageNumber;
     [SerializeField] Text m_clear;
 
-    Clear m_clearMode;
-
     Singleton singleton;
+    StageData stageData;
 
     void Start()
     {
         singleton = Singleton.Instance;
         Debug.Log(singleton.m_stageClearCount);
+
+        stageData = StageData.Instance;
 
         for (int i = 0; i < 12; i++)
         {
@@ -144,15 +145,15 @@ public class StageSelect : MonoBehaviour
 
         StageCheck();
 
-        switch (m_clearMode)
+        switch (singleton.NowStageMode)
         {
-            case Clear.Tutorial:
+            case Singleton.StageMode.Tutorial:
                 m_clear.text = "ゴールする";
                 break;
-            case Clear.Key:
+            case Singleton.StageMode.Key:
                 m_clear.text = "カギを３つ集めてゴール";
                 break;
-            case Clear.Time:
+            case Singleton.StageMode.TimeAttack:
                 m_clear.text = "制限時間内にゴール";
                 break;
         }
@@ -163,13 +164,14 @@ public class StageSelect : MonoBehaviour
 
     void StageCheck()
     {
-        if (m_selectNumber == 0)
+        switch (m_selectNumber)
         {
-            m_clearMode = Clear.Tutorial;
-        }
-        else if (m_selectNumber == 1)
-        {
-            m_clearMode = Clear.Key;
+            case 0:
+                singleton.NowStageMode = stageData.Tutrial;
+                break;
+            case 1:
+                singleton.NowStageMode = stageData.Stage1;
+                break;
         }
     }
 
@@ -209,11 +211,9 @@ public class StageSelect : MonoBehaviour
         switch (number)
         {
             case 0:
-                singleton.m_clearMode = Clear.Tutorial;
                 SceneManager.LoadScene("Tutorial");
                 break;
             case 1:
-                singleton.m_clearMode = Clear.Key;
                 SceneManager.LoadScene("Stage1");
                 break;
             case 2:
@@ -248,14 +248,4 @@ public class StageSelect : MonoBehaviour
                 break;
         }
     }
-}
-
-/// <summary>
-/// クリア条件の種類
-/// </summary>
-public enum Clear
-{
-    Tutorial,
-    Key,
-    Time,
 }
